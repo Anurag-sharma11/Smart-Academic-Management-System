@@ -19,7 +19,7 @@ def create_app():
     def after_request(response):
         response.headers["Access-Control-Allow-Origin"] = "http://localhost:5173"
         response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
-        response.headers["Access-Control-Allow-Methods"] = "GET,POST,PATCH,DELETE,OPTIONS"
+        response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,PATCH,DELETE,OPTIONS"
         return response
 
     db.init_app(app)

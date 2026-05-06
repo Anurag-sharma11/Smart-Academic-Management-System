@@ -4,23 +4,35 @@ import API from "../services/api"
 
 function TeacherDashboard() {
   const [studentId, setStudentId] = useState("")
+  const [subject, setSubject] = useState("")
   const [prediction, setPrediction] = useState(null)
 
   const navigate = useNavigate()
 
-  // 🔥 AI PREDICTION
+  // SUBJECT-WISE AI PREDICTION
   const getPrediction = async () => {
     try {
       const token = localStorage.getItem("token")
 
-      const res = await API.get(`/attendance/predict/${studentId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      const res = await API.post(
+        "/attendance/predict",
+        {
+          student_id: studentId,
+          subject: subject
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      })
+      )
 
       setPrediction(res.data)
+
     } catch (err) {
+      console.log("FULL ERROR:", err)
+      console.log("RESPONSE:", err.response)
+      console.log("DATA:", err.response?.data)
       alert("Error fetching prediction")
     }
   }
@@ -34,17 +46,34 @@ function TeacherDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        {/* 🔮 AI Prediction */}
+        {/* SUBJECT-WISE AI PREDICTION */}
         <div className="bg-gray-800 p-6 rounded-xl">
-          <h2 className="text-xl mb-4">AI Attendance Prediction 🤖</h2>
+          <h2 className="text-xl mb-4">
+            Subject-wise Attendance Prediction 🤖
+          </h2>
 
           <input
-            type="number"
-            placeholder="Enter Student ID"
+            type="text"
+            placeholder="Enter Student ID / Enrollment No"
             value={studentId}
             onChange={(e) => setStudentId(e.target.value)}
             className="w-full mb-3 p-2 rounded bg-gray-700"
           />
+
+          <select
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            className="w-full mb-3 p-2 rounded bg-gray-700"
+          >
+            <option value="">Select Subject</option>
+            <option value="DBMS">DBMS</option>
+            <option value="OS">OS</option>
+            <option value="DS">DS</option>
+            <option value="CN">CN</option>
+            <option value="Maths">Maths</option>
+            <option value="DS Lab">DS Lab</option>
+            <option value="OS Lab">OS Lab</option>
+          </select>
 
           <button
             onClick={getPrediction}
@@ -54,15 +83,55 @@ function TeacherDashboard() {
           </button>
 
           {prediction && (
-            <div className="mt-4">
+            <div className="mt-4 space-y-1">
+              <p>👤 {prediction.student_name}</p>
+              <p>📘 Subject: {prediction.subject}</p>
               <p>📊 Current: {prediction.current_attendance}%</p>
               <p>🔮 Next Week: {prediction.predicted_next_week}%</p>
-              <p>⚠️ Risk: {prediction.risk}</p>
+
+              <p
+                className={
+                  prediction.risk === "High Risk"
+                    ? "text-red-400 font-bold"
+                    : prediction.risk === "Medium Risk"
+                    ? "text-yellow-400 font-bold"
+                    : "text-green-400 font-bold"
+                }
+              >
+                ⚠️ {prediction.risk}
+              </p>
+
+              <p>🎯 Accuracy: {prediction.accuracy}%</p>
+              <p>📉 MAE: {prediction.mae}</p>
             </div>
           )}
         </div>
 
-        {/* 🧾 Attendance */}
+        {/* NEW STUDENTS */}
+        <div className="bg-gray-800 p-6 rounded-xl">
+          <h2 className="text-xl mb-4">New Student</h2>
+
+          <button
+            onClick={() => navigate("/teacher-add-student")}
+            className="bg-cyan-600 px-4 py-2 rounded w-full"
+          >
+            Add Student
+          </button>
+        </div>
+
+        {/* MANAGE STUDENTS */}
+        <div className="bg-gray-800 p-6 rounded-xl">
+          <h2 className="text-xl mb-4">Manage Students</h2>
+
+          <button
+            onClick={() => navigate("/teacher-manage-students")}
+            className="bg-teal-600 px-4 py-2 rounded w-full"
+          >
+            View / Edit Students
+          </button>
+        </div>
+
+        {/* ATTENDANCE */}
         <div className="bg-gray-800 p-6 rounded-xl">
           <h2 className="text-xl mb-4">Attendance</h2>
 
@@ -74,7 +143,7 @@ function TeacherDashboard() {
           </button>
         </div>
 
-        {/* 📘 Assignment */}
+        {/* ASSIGNMENTS */}
         <div className="bg-gray-800 p-6 rounded-xl">
           <h2 className="text-xl mb-4">Assignments</h2>
 
@@ -86,7 +155,7 @@ function TeacherDashboard() {
           </button>
         </div>
 
-        {/* 📝 NEW: Assessment */}
+        {/* ASSESSMENT */}
         <div className="bg-gray-800 p-6 rounded-xl">
           <h2 className="text-xl mb-4">Assessment</h2>
 
@@ -98,7 +167,7 @@ function TeacherDashboard() {
           </button>
         </div>
 
-        {/* 📊 Quick Actions */}
+        {/* QUICK ACTIONS */}
         <div className="bg-gray-800 p-6 rounded-xl md:col-span-2">
           <h2 className="text-xl mb-4">Quick Actions</h2>
 
@@ -110,6 +179,7 @@ function TeacherDashboard() {
           </button>
         </div>
 
+        {/* EVALUATE */}
         <div className="bg-gray-800 p-6 rounded-xl">
           <h2 className="text-xl mb-4">Evaluate Assessments</h2>
 
@@ -118,6 +188,20 @@ function TeacherDashboard() {
             className="bg-red-600 px-4 py-2 rounded w-full"
           >
             Check Submissions
+          </button>
+        </div>
+        
+        {/* Insights */}
+        <div className="bg-gray-800 p-6 rounded-xl">
+          <h2 className="text-xl mb-4">
+            Student Insights Report
+          </h2>
+
+          <button
+            onClick={() => navigate("/teacher-analytics")}
+            className="bg-pink-600 px-4 py-2 rounded w-full"
+          >
+            View Analytics
           </button>
         </div>
 

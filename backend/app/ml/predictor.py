@@ -1,73 +1,70 @@
 import numpy as np
-from sklearn.linear_model import LinearRegression, LogisticRegression
-from sklearn.metrics import accuracy_score, mean_absolute_error
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error
+
 
 def predict_attendance_and_risk(attendance_list):
     """
-    attendance_list = [1, 0, 1, 1, 0 ...]
+    attendance_list example:
+    [1,0,1,1,1,0,1,0...]
+
+    Predicts next week attendance %
+    using Random Forest on rolling attendance windows.
     """
 
-    if len(attendance_list) < 5:
+    if len(attendance_list) < 10:
         return None, None, None, None
 
-    # -------------------------------
-    # 🔵 LINEAR REGRESSION (Predict %)
-    # -------------------------------
-    X = np.array(range(len(attendance_list))).reshape(-1, 1)
-    y = np.array(attendance_list)
+    X = []
+    y = []
 
-    linear_model = LinearRegression()
-    linear_model.fit(X, y)
+    # Create rolling windows of 5 records
+    for i in range(len(attendance_list) - 5):
+        X.append(attendance_list[i:i+5])
+        y.append(attendance_list[i+5])
 
-    # Predict next 7 days
-    future_days = np.array(
-        range(len(attendance_list), len(attendance_list) + 7)
-    ).reshape(-1, 1)
+    X = np.array(X)
+    y = np.array(y)
 
-    predictions = linear_model.predict(future_days)
+    model = RandomForestRegressor(
+        n_estimators=100,
+        random_state=42
+    )
 
-    predicted_percentage = np.mean(predictions) * 100
-    predicted_percentage = max(0, min(100, predicted_percentage))
+    model.fit(X, y)
 
-    # ✅ MAE (regression metric)
-    train_preds = linear_model.predict(X)
+    train_preds = model.predict(X)
     mae = mean_absolute_error(y, train_preds)
 
-    # --------------------------------
-    # 🔴 LOGISTIC REGRESSION (Risk ML)
-    # --------------------------------
+    # Predict next 7 attendance values iteratively
+    recent_window = attendance_list[-5:].copy()
+    future_preds = []
 
-    labels = []
+    for _ in range(7):
+        pred = model.predict([recent_window])[0]
 
-    for val in attendance_list:
-        if val == 1:
-            labels.append(2)  # Low Risk
-        else:
-            labels.append(0)  # High Risk
+        pred = max(0, min(1, pred))
 
-    if len(set(labels)) < 2:
+        future_preds.append(pred)
+
+        recent_window.pop(0)
+        recent_window.append(pred)
+
+    predicted_percentage = np.mean(future_preds) * 100
+
+    # Risk Logic
+    if predicted_percentage < 50:
+        risk = "High Risk"
+    elif predicted_percentage < 75:
         risk = "Medium Risk"
-        accuracy = 1.0   # default (no variation)
     else:
-        X_log = X
-        y_log = np.array(labels)
+        risk = "Low Risk"
 
-        log_model = LogisticRegression()
-        log_model.fit(X_log, y_log)
+    accuracy = (1 - mae) * 100
 
-        # ✅ Accuracy calculation
-        train_pred = log_model.predict(X_log)
-        accuracy = accuracy_score(y_log, train_pred)
-
-        # Predict next
-        next_day = np.array([[len(attendance_list)]])
-        pred_class = log_model.predict(next_day)[0]
-
-        if pred_class == 0:
-            risk = "High Risk"
-        elif pred_class == 1:
-            risk = "Medium Risk"
-        else:
-            risk = "Low Risk"
-
-    return predicted_percentage, risk, accuracy, mae
+    return (
+        round(predicted_percentage, 2),
+        risk,
+        round(accuracy, 2),
+        round(mae, 4)
+    )

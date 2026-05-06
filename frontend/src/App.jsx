@@ -13,6 +13,10 @@ import StudentAssignment from "./pages/StudentAssignment"
 import TeacherAssessment from "./pages/TeacherAssessment"
 import StudentAssessment from "./pages/StudentAssessment"
 import TeacherEvaluate from "./pages/TeacherEvaluate"
+import TeacherAddStudent from "./pages/TeacherAddStudent"
+import TeacherManageStudents from "./pages/TeacherManageStudents"
+import TeacherAttendanceHistory from "./pages/TeacherAttendanceHistory"
+import TeacherAnalytics from "./pages/TeacherAnalytics"
 
 function App() {
   return (
@@ -110,6 +114,42 @@ function App() {
         element={
           <ProtectedRoute allowedRoles={["teacher"]}>
             <TeacherEvaluate />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/teacher-add-student"
+        element={
+          <ProtectedRoute allowedRoles={["teacher", "admin"]}>
+            <TeacherAddStudent />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/teacher-manage-students"
+        element={
+          <ProtectedRoute allowedRoles={["teacher", "admin"]}>
+            <TeacherManageStudents />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/teacher-attendance-history"
+        element={
+          <ProtectedRoute allowedRoles={["teacher"]}>
+            <TeacherAttendanceHistory />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/teacher-analytics"
+        element={
+          <ProtectedRoute allowedRoles={["teacher"]}>
+            <TeacherAnalytics />
           </ProtectedRoute>
         }
       />
