@@ -1,0 +1,152 @@
+.attendance-history-page {
+  min-height: 100vh;
+  background: #081028;
+  color: #f8fafc;
+  padding: 40px;
+}
+
+/* HEADER */
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.history-header h1 {
+  font-size: 38px;
+  margin-bottom: 8px;
+}
+
+.history-header p {
+  color: #94a3b8;
+}
+
+.history-badge {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  padding: 12px 22px;
+  border-radius: 14px;
+  font-weight: bold;
+}
+
+/* FILTERS */
+
+.filters-card {
+  background: #121c33;
+  border-radius: 24px;
+  padding: 30px;
+  border: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 30px;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.filters-grid input {
+  background: #1b2742;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 14px;
+  border-radius: 14px;
+  color: white;
+}
+
+.filters-grid input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* TABLE CARD */
+
+.history-table-card {
+  background: #121c33;
+  border-radius: 24px;
+  padding: 30px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.table-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.table-top span {
+  color: #94a3b8;
+}
+
+/* TABLE */
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-table thead {
+  background: #1b2742;
+}
+
+.history-table th {
+  padding: 18px;
+  text-align: left;
+}
+
+.history-table td {
+  padding: 18px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.history-table tr:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+/* BADGES */
+
+.present-badge,
+.absent-badge {
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.present-badge {
+  background: rgba(34,197,94,0.15);
+  color: #4ade80;
+}
+
+.absent-badge {
+  background: rgba(239,68,68,0.15);
+  color: #f87171;
+}
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
+  .attendance-history-page {
+    padding: 20px;
+  }
+
+  .history-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .history-header h1 {
+    font-size: 30px;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+
+}

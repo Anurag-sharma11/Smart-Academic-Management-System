@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import API from "../services/api"
+import "./TeacherAssignment.css"
 
 function TeacherAssignment() {
     const [title, setTitle] = useState("")
@@ -13,6 +14,7 @@ function TeacherAssignment() {
 
     // 🔥 NEW STATE FOR MARKS (FIXED)
     const [marksInput, setMarksInput] = useState({})
+    const [editingMarks, setEditingMarks] = useState({})
 
     // 🔹 CREATE ASSIGNMENT
     const handleCreate = async () => {
@@ -115,143 +117,297 @@ function TeacherAssignment() {
     }, [])
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white p-10">
+        <div className="assignment-page">
 
-            {/* 🔥 CREATE FORM */}
-            <div className="bg-gray-800 p-6 rounded-xl w-96 shadow-lg mb-10">
-                <h2 className="text-2xl font-bold mb-4">
-                    Create Assignment 📘
-                </h2>
+            {/* HEADER */}
 
-                <input
-                    type="text"
-                    placeholder="Assignment Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    className="w-full mb-4 p-3 rounded bg-gray-700 outline-none"
-                />
+            <div className="assignment-header">
 
-                <input
-                    type="datetime-local"
-                    value={deadline}
-                    onChange={(e) => setDeadline(e.target.value)}
-                    className="w-full mb-4 p-3 rounded bg-gray-700 outline-none"
-                />
+                <div>
 
-                <input
-                    type="text"
-                    placeholder="Description"
+                    <h1>Assignment Management 📘</h1>
+
+                    <p>
+                        Create assignments, review submissions and evaluate students.
+                    </p>
+
+                </div>
+
+                <div className="assignment-badge">
+                    LMS MODULE
+                </div>
+
+            </div>
+
+            {/* CREATE FORM */}
+
+            <div className="assignment-form-card">
+
+                <h2>Create Assignment</h2>
+
+                <div className="assignment-form-grid">
+
+                    <input
+                        type="text"
+                        placeholder="Assignment Title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+
+                    <input
+                        type="datetime-local"
+                        value={deadline}
+                        onChange={(e) => setDeadline(e.target.value)}
+                    />
+
+                </div>
+
+                <textarea
+                    placeholder="Assignment Description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="w-full mb-4 p-3 rounded bg-gray-700 outline-none"
                 />
 
-                <input
-                    type="file"
-                    onChange={(e) => setFile(e.target.files[0])}
-                    className="w-full mb-4 p-3 rounded bg-gray-700 outline-none"
-                />
+                <div className="file-upload-box">
+
+                    <label>
+                        Upload Assignment File 📄
+                    </label>
+
+                    <input
+                        type="file"
+                        onChange={(e) => setFile(e.target.files[0])}
+                    />
+
+                </div>
 
                 <button
                     onClick={handleCreate}
-                    className="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded"
+                    className="create-assignment-btn"
                 >
                     Create Assignment
                 </button>
+
             </div>
 
-            {/* 🔥 ASSIGNMENT LIST */}
-            <h2 className="text-2xl mb-4">Assignments 📋</h2>
+            {/* ASSIGNMENTS */}
 
-            {assignments.map((a) => (
-                <div key={a.id} className="bg-gray-800 p-4 rounded mb-4">
-                    <h3 className="text-lg font-bold">{a.title}</h3>
-                    <p>Deadline: {new Date(a.deadline).toLocaleString()}</p>
+            <div className="assignments-section">
 
-                    {/* 🔥 FILE VIEW */}
-                    {a.file_url && (
-                        <a
-                            href={`http://127.0.0.1:5000${a.file_url}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-blue-400 underline block mt-2"
-                        >
-                            View File 📄
-                        </a>
-                    )}
+                <div className="section-top">
 
-                    <button
-                        onClick={() => viewSubmissions(a.id)}
-                        className="bg-yellow-500 px-3 py-1 rounded mt-2"
-                    >
-                        View Submissions
-                    </button>
+                    <h2>Assignments 📋</h2>
+
+                    <span>
+                        {assignments.length} Assignments
+                    </span>
+
                 </div>
-            ))}
 
-            {/* 🔥 SUBMISSIONS UI */}
-            {selectedAssignment && (
-                <div className="mt-8 bg-gray-800 p-5 rounded">
-                    <h2 className="text-xl mb-4">
-                        Submissions (Assignment ID: {selectedAssignment})
-                    </h2>
+                <div className="assignments-grid">
 
-                    {submissions.length === 0 ? (
-                        <p>No submissions yet</p>
-                    ) : (
-                        submissions.map((s) => (
-                            <div key={s.id} className="border p-3 mb-3 rounded">
+                    {assignments.map((a) => (
 
-                                <p><strong>Student ID:</strong> {s.student_id}</p>
-                                <p><strong>Answer:</strong> {s.content}</p>
+                        <div
+                            key={a.id}
+                            className="assignment-card"
+                        >
 
-                                {s.file_url && (
-                                    <a
-                                        href={`http://127.0.0.1:5000${s.file_url}`}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="text-blue-400 underline block mt-2"
-                                    >
-                                        View Student File 📄
-                                    </a>
-                                )}
+                            <div className="assignment-top">
 
-                                <p>
-                                    <strong>Time:</strong>{" "}
-                                    {new Date(s.submitted_at).toLocaleString()}
-                                </p>
+                                <h3>{a.title}</h3>
 
-                                <p>
-                                    <strong>Marks:</strong>{" "}
-                                    {s.marks !== null ? s.marks : "Not graded"}
-                                </p>
-
-                                {/* 🔥 FIXED INPUT */}
-                                <input
-                                    type="number"
-                                    placeholder="Enter marks"
-                                    onChange={(e) =>
-                                        setMarksInput({
-                                            ...marksInput,
-                                            [s.id]: e.target.value
-                                        })
-                                    }
-                                    className="p-2 bg-gray-700 rounded mr-2 mt-2"
-                                />
-
-                                {/* 🔥 FIXED BUTTON */}
-                                <button
-                                    onClick={() => giveMarks(s.id, marksInput[s.id])}
-                                    className="bg-green-600 px-3 py-1 rounded mt-2"
-                                >
-                                    Submit Marks
-                                </button>
+                                <div className="deadline-badge">
+                                    Deadline
+                                </div>
 
                             </div>
-                        ))
-                    )}
+
+                            <p className="deadline-text">
+                                {new Date(a.deadline).toLocaleString()}
+                            </p>
+
+                            {a.file_url && (
+
+                                <a
+                                    href={`http://127.0.0.1:5000${a.file_url}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="file-link"
+                                >
+                                    View File 📄
+                                </a>
+
+                            )}
+
+                            <button
+                                onClick={() => viewSubmissions(a.id)}
+                                className="view-submissions-btn"
+                            >
+                                View Submissions
+                            </button>
+
+                        </div>
+
+                    ))}
+
                 </div>
+
+            </div>
+
+            {/* SUBMISSIONS */}
+
+            {selectedAssignment && (
+
+                <div className="submissions-card">
+
+                    <div className="section-top">
+
+                        <h2>
+                            Assignment Submissions 📥
+                        </h2>
+
+                        <span>
+                            Assignment ID: {selectedAssignment}
+                        </span>
+
+                    </div>
+
+                    {submissions.length === 0 ? (
+
+                        <div className="empty-box">
+                            No submissions yet
+                        </div>
+
+                    ) : (
+
+                        <div className="submissions-list">
+
+                            {submissions.map((s) => (
+
+                                <div
+                                    key={s.id}
+                                    className="submission-item"
+                                >
+
+                                    <div className="submission-top">
+
+                                        <div>
+
+                                            <h3>
+                                                Student ID: {s.student_id}
+                                            </h3>
+
+                                            <p>
+                                                Submitted:
+                                                {" "}
+                                                {new Date(
+                                                    s.submitted_at
+                                                ).toLocaleString()}
+                                            </p>
+
+                                        </div>
+
+                                        <div className="marks-badge">
+
+                                            {s.marks !== null
+                                                ? `${s.marks} Marks`
+                                                : "Not Graded"}
+
+                                        </div>
+
+                                    </div>
+
+                                    <div className="answer-box">
+                                        {s.content}
+                                    </div>
+
+                                    {s.file_url && (
+
+                                        <a
+                                            href={`http://127.0.0.1:5000${s.file_url}`}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="file-link"
+                                        >
+                                            View Student File 📄
+                                        </a>
+
+                                    )}
+
+                                    <div className="grading-box">
+
+                                        {s.marks !== null && !editingMarks[s.id] ? (
+
+                                            <div className="marks-display">
+
+                                                <span>
+                                                    Marks Given: {s.marks}
+                                                </span>
+
+                                                <button
+                                                    className="edit-marks-btn"
+                                                    onClick={() =>
+                                                        setEditingMarks({
+                                                            ...editingMarks,
+                                                            [s.id]: true
+                                                        })
+                                                    }
+                                                >
+                                                    Edit Marks
+                                                </button>
+
+                                            </div>
+
+                                        ) : (
+
+                                            <>
+
+                                                <input
+                                                    type="number"
+                                                    placeholder="Enter marks"
+                                                    value={marksInput[s.id] || ""}
+                                                    onChange={(e) =>
+                                                        setMarksInput({
+                                                            ...marksInput,
+                                                            [s.id]: e.target.value
+                                                        })
+                                                    }
+                                                />
+
+                                                <button
+                                                    onClick={() => {
+                                                        giveMarks(s.id, marksInput[s.id])
+
+                                                        setEditingMarks({
+                                                            ...editingMarks,
+                                                            [s.id]: false
+                                                        })
+                                                    }}
+                                                >
+                                                    {s.marks !== null
+                                                        ? "Update Marks"
+                                                        : "Submit Marks"}
+                                                </button>
+
+                                            </>
+
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+                            ))}
+
+                        </div>
+
+                    )}
+
+                </div>
+
             )}
+
         </div>
     )
 }

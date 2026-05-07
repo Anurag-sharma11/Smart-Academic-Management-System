@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import API from "../services/api"
+import "./Auth.css"
 
 function Login() {
   const navigate = useNavigate()
@@ -30,42 +31,81 @@ function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="bg-gray-800 p-8 rounded-xl w-96 shadow-lg">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">
-          ALASK Login
-        </h2>
+    <div className="auth-page">
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full mb-4 p-3 rounded bg-gray-700 text-white outline-none"
-        />
+      {/* LEFT */}
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full mb-4 p-3 rounded bg-gray-700 text-white outline-none"
-        />
+      <div className="auth-left">
 
-        <button
-          onClick={handleLogin}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded"
-        >
-          Login
-        </button>
+        <div className="auth-overlay"></div>
 
-        <p className="text-gray-400 text-sm mt-4 text-center">
-          Don't have an account?{" "}
-          <Link to="/register" className="text-blue-400">
-            Register
-          </Link>
-        </p>
+        <div className="auth-content">
+
+          <h1>ALASK</h1>
+
+          <p>
+            Smart Academic Analytics &
+            Learning Knowledge System
+          </p>
+
+          <div className="auth-features">
+
+            <div>📊 AI Attendance Analytics</div>
+            <div>📝 Online Assessments</div>
+            <div>📘 Assignment Management</div>
+            <div>🤖 Smart Academic Insights</div>
+
+          </div>
+
+        </div>
+
       </div>
+
+      {/* RIGHT */}
+
+      <div className="auth-right">
+        <div className="orb orb-1"></div>
+        <div className="orb orb-2"></div>
+        <div className="auth-card">
+
+          <h2>Welcome Back 👋</h2>
+
+          <p className="auth-subtitle">
+            Login to continue your journey.
+          </p>
+
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <button onClick={handleLogin}>
+            Login
+          </button>
+
+          <p className="auth-switch">
+            Don't have an account?
+            {" "}
+
+            <Link to="/register">
+              Register
+            </Link>
+
+          </p>
+
+        </div>
+
+      </div>
+
     </div>
   )
 }

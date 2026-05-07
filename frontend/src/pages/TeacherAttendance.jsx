@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import API from "../services/api"
+import "./TeacherAttendance.css"
 
 function TeacherAttendance() {
   const navigate = useNavigate()
@@ -93,97 +94,165 @@ function TeacherAttendance() {
   }
 
   return (
-    <div className="p-10 bg-gray-900 text-white min-h-screen">
-      <h1 className="text-3xl font-bold mb-8">Mark Attendance</h1>
+    <div className="attendance-page">
 
-      {/* ATTENDANCE SESSION DETAILS */}
-      <div className="grid md:grid-cols-5 gap-4 mb-8">
-        <input
-          type="date"
-          name="date"
-          value={attendanceMeta.date}
-          onChange={handleMetaChange}
-          className="p-3 rounded bg-gray-800"
-        />
+      {/* HEADER */}
+      <div className="attendance-header">
 
-        <select
-          name="subject"
-          value={attendanceMeta.subject}
-          onChange={handleMetaChange}
-          className="p-3 rounded bg-gray-800"
-        >
-          <option value="">Select Subject</option>
-          <option value="DBMS">DBMS</option>
-          <option value="OS">OS</option>
-          <option value="DS">DS</option>
-          <option value="CN">CN</option>
-          <option value="Maths">Maths</option>
-          <option value="DS Lab">DS Lab</option>
-          <option value="OS Lab">OS Lab</option>
-        </select>
+        <div>
+          <h1>Attendance Management 📅</h1>
 
-        <input
-          type="number"
-          name="period_number"
-          placeholder="Period No"
-          value={attendanceMeta.period_number}
-          onChange={handleMetaChange}
-          className="p-3 rounded bg-gray-800"
-        />
+          <p>
+            Manage and track classroom attendance efficiently.
+          </p>
+        </div>
 
-        <input
-          type="time"
-          name="start_time"
-          value={attendanceMeta.start_time}
-          onChange={handleMetaChange}
-          className="p-3 rounded bg-gray-800"
-        />
+        <div className="attendance-badge">
+          LIVE SESSION
+        </div>
 
-        <input
-          type="time"
-          name="end_time"
-          value={attendanceMeta.end_time}
-          onChange={handleMetaChange}
-          className="p-3 rounded bg-gray-800"
-        />
       </div>
 
-      {/* STUDENTS */}
-      <div className="space-y-3">
-        {students.map((s) => (
-          <div
-            key={s.id}
-            className="flex justify-between items-center bg-gray-800 p-4 rounded"
+      {/* SESSION CARD */}
+      <div className="session-card">
+
+        <h2>Attendance Session Details</h2>
+
+        <div className="session-grid">
+
+          <input
+            type="date"
+            name="date"
+            value={attendanceMeta.date}
+            onChange={handleMetaChange}
+          />
+
+          <select
+            name="subject"
+            value={attendanceMeta.subject}
+            onChange={handleMetaChange}
           >
-            <div>
-              <p className="font-semibold">{s.name}</p>
-              <p className="text-sm text-gray-400">
-                {s.student_id}
-              </p>
+            <option value="">Select Subject</option>
+            <option value="DBMS">DBMS</option>
+            <option value="OS">OS</option>
+            <option value="DS">DS</option>
+            <option value="CN">CN</option>
+            <option value="Maths">Maths</option>
+            <option value="DS Lab">DS Lab</option>
+            <option value="OS Lab">OS Lab</option>
+          </select>
+
+          <input
+            type="number"
+            name="period_number"
+            placeholder="Period Number"
+            value={attendanceMeta.period_number}
+            onChange={handleMetaChange}
+          />
+
+          <input
+            type="time"
+            name="start_time"
+            value={attendanceMeta.start_time}
+            onChange={handleMetaChange}
+          />
+
+          <input
+            type="time"
+            name="end_time"
+            value={attendanceMeta.end_time}
+            onChange={handleMetaChange}
+          />
+
+        </div>
+
+      </div>
+
+      {/* STUDENT LIST */}
+      <div className="students-card">
+
+        <div className="students-top">
+
+          <h2>Student Attendance List</h2>
+
+          <span>
+            {students.length} Students
+          </span>
+
+        </div>
+
+        <div className="students-list">
+
+          {students.map((s) => (
+
+            <div
+              key={s.id}
+              className={`student-row ${s.present ? "present-row" : ""
+                }`}
+            >
+
+              <div className="student-info">
+
+                <div className="student-avatar">
+                  {s.name?.charAt(0)}
+                </div>
+
+                <div>
+
+                  <p className="student-name">
+                    {s.name}
+                  </p>
+
+                  <p className="student-id">
+                    {s.student_id}
+                  </p>
+
+                </div>
+
+              </div>
+
+              <label className="switch">
+
+                <input
+                  type="checkbox"
+                  checked={s.present}
+                  onChange={() => toggleAttendance(s.id)}
+                />
+
+                <span className="slider"></span>
+
+              </label>
+
             </div>
 
-            <input
-              type="checkbox"
-              checked={s.present}
-              onChange={() => toggleAttendance(s.id)}
-              className="w-5 h-5"
-            />
-          </div>
-        ))}
+          ))}
+
+        </div>
+
       </div>
 
-      <button
-        onClick={submitAttendance}
-        className="mt-8 bg-green-600 px-6 py-3 rounded w-full"
-      >
-        Submit Attendance
-      </button>
-      <button
-        onClick={() => navigate("/teacher-attendance-history")}
-        className="mt-4 bg-blue-600 px-6 py-3 rounded w-full"
-      >
-        View Attendance Records
-      </button>
+      {/* ACTION BUTTONS */}
+
+      <div className="attendance-actions">
+
+        <button
+          onClick={submitAttendance}
+          className="submit-attendance-btn"
+        >
+          Submit Attendance
+        </button>
+
+        <button
+          onClick={() =>
+            navigate("/teacher-attendance-history")
+          }
+          className="history-btn"
+        >
+          View Attendance Records
+        </button>
+
+      </div>
+
     </div>
   )
 }

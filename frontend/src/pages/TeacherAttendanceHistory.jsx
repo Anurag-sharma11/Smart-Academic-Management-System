@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import API from "../services/api"
+import "./TeacherAttendanceHistory.css"
 
 function TeacherAttendanceHistory() {
   const [records, setRecords] = useState([])
@@ -38,77 +39,148 @@ function TeacherAttendanceHistory() {
   )
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-10">
-      <h1 className="text-3xl font-bold mb-8">Attendance Records</h1>
+    <div className="attendance-history-page">
 
-      <div className="grid md:grid-cols-3 gap-4 mb-8">
-        <input
-          type="date"
-          value={filters.date}
-          onChange={(e) =>
-            setFilters({ ...filters, date: e.target.value })
-          }
-          className="p-3 rounded bg-gray-800"
-        />
+      {/* HEADER */}
 
-        <input
-          type="text"
-          placeholder="Filter by Subject"
-          value={filters.subject}
-          onChange={(e) =>
-            setFilters({ ...filters, subject: e.target.value })
-          }
-          className="p-3 rounded bg-gray-800"
-        />
+      <div className="history-header">
 
-        <input
-          type="number"
-          placeholder="Filter by Period"
-          value={filters.period}
-          onChange={(e) =>
-            setFilters({ ...filters, period: e.target.value })
-          }
-          className="p-3 rounded bg-gray-800"
-        />
+        <div>
+
+          <h1>Attendance Records 📅</h1>
+
+          <p>
+            Monitor attendance sessions and student presence history.
+          </p>
+
+        </div>
+
+        <div className="history-badge">
+          ATTENDANCE LOGS
+        </div>
+
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full bg-gray-800 rounded-xl overflow-hidden">
-          <thead className="bg-gray-700">
-            <tr>
-              <th className="p-3 text-left">Date</th>
-              <th className="p-3 text-left">Subject</th>
-              <th className="p-3 text-left">Period</th>
-              <th className="p-3 text-left">Time</th>
-              <th className="p-3 text-left">Student ID</th>
-              <th className="p-3 text-left">Status</th>
-            </tr>
-          </thead>
+      {/* FILTERS */}
 
-          <tbody>
-            {filtered.map((r) => (
-              <tr key={r.id} className="border-t border-gray-700">
-                <td className="p-3">{r.date}</td>
-                <td className="p-3">{r.subject}</td>
-                <td className="p-3">{r.period_number}</td>
-                <td className="p-3">
-                  {r.start_time} - {r.end_time}
-                </td>
-                <td className="p-3">{r.student_id}</td>
-                <td
-                  className={`p-3 font-semibold ${
-                    r.status === "present"
-                      ? "text-green-400"
-                      : "text-red-400"
-                  }`}
-                >
-                  {r.status}
-                </td>
+      <div className="filters-card">
+
+        <div className="filters-grid">
+
+          <input
+            type="date"
+            value={filters.date}
+            onChange={(e) =>
+              setFilters({
+                ...filters,
+                date: e.target.value
+              })
+            }
+          />
+
+          <input
+            type="text"
+            placeholder="Filter by Subject"
+            value={filters.subject}
+            onChange={(e) =>
+              setFilters({
+                ...filters,
+                subject: e.target.value
+              })
+            }
+          />
+
+          <input
+            type="number"
+            placeholder="Filter by Period"
+            value={filters.period}
+            onChange={(e) =>
+              setFilters({
+                ...filters,
+                period: e.target.value
+              })
+            }
+          />
+
+        </div>
+
+      </div>
+
+      {/* TABLE */}
+
+      <div className="history-table-card">
+
+        <div className="table-top">
+
+          <h2>Attendance Sessions</h2>
+
+          <span>
+            {filtered.length} Records
+          </span>
+
+        </div>
+
+        <div className="table-wrapper">
+
+          <table className="history-table">
+
+            <thead>
+
+              <tr>
+                <th>Date</th>
+                <th>Subject</th>
+                <th>Period</th>
+                <th>Time</th>
+                <th>Student ID</th>
+                <th>Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+
+            </thead>
+
+            <tbody>
+
+              {filtered.map((r) => (
+
+                <tr key={r.id}>
+
+                  <td>{r.date}</td>
+
+                  <td>{r.subject}</td>
+
+                  <td>{r.period_number}</td>
+
+                  <td>
+                    {r.start_time} - {r.end_time}
+                  </td>
+
+                  <td>{r.student_id}</td>
+
+                  <td>
+
+                    <span
+                      className={
+                        r.status === "present"
+                          ? "present-badge"
+                          : "absent-badge"
+                      }
+                    >
+                      {r.status}
+                    </span>
+
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
       </div>
+
     </div>
   )
 }

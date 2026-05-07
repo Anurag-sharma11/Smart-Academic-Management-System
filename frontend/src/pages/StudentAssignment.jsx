@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import API from "../services/api"
+import "./StudentAssignment.css"
 
 function StudentAssignment() {
     const [assignments, setAssignments] = useState([])
@@ -63,115 +64,210 @@ function StudentAssignment() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white p-10">
+        <div className="student-assignment-page">
 
-            <h1 className="text-3xl font-bold mb-6">
-                Student Assignments 📘
-            </h1>
+            {/* HEADER */}
 
-            {/* 🔥 EMPTY STATE */}
+            <div className="assignment-header">
+
+                <div>
+
+                    <h1>Student Assignments 📘</h1>
+
+                    <p>
+                        View assignments, upload submissions and track marks.
+                    </p>
+
+                </div>
+
+                <div className="assignment-badge">
+                    LMS ASSIGNMENTS
+                </div>
+
+            </div>
+
+            {/* EMPTY */}
+
             {filteredAssignments.length === 0 && (
-                <p className="text-gray-400">No assignments found</p>
+
+                <div className="empty-assignment-box">
+                    No assignments found
+                </div>
+
             )}
 
-            {filteredAssignments.map((a) => {
-                const isExpired = new Date(a.deadline) < new Date()
+            {/* ASSIGNMENTS */}
 
-                return (
-                    <div
-                        key={a.id}
-                        className="bg-gray-800 p-5 rounded mb-5 hover:scale-[1.01] transition"
-                    >
+            <div className="student-assignment-list">
 
-                        <h2 className="text-xl font-bold">{a.title}</h2>
+                {filteredAssignments.map((a) => {
 
-                        <p className="text-gray-300">{a.description}</p>
+                    const isExpired =
+                        new Date(a.deadline) < new Date()
 
-                        <p className="text-sm text-gray-400 mt-1">
-                            Deadline: {new Date(a.deadline).toLocaleString()}
-                        </p>
+                    return (
 
-                        {/* 🔥 DEADLINE STATUS */}
-                        {isExpired && (
-                            <p className="text-red-400 mt-1">
-                                Deadline Passed ❌
-                            </p>
-                        )}
+                        <div
+                            key={a.id}
+                            className="student-assignment-card"
+                        >
 
-                        {/* 🔥 VIEW TEACHER FILE */}
-                        {a.file_url && (
-                            <a
-                                href={`http://127.0.0.1:5000${a.file_url}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-blue-400 underline block mt-2"
-                            >
-                                View Assignment File 📄
-                            </a>
-                        )}
+                            {/* TOP */}
 
-                        {/* 🔥 STATUS */}
-                        <div className="mt-2">
-                            <p>
-                                Status:{" "}
-                                {a.submitted
-                                    ? "✅ Submitted"
-                                    : "❌ Not Submitted"}
-                            </p>
+                            <div className="assignment-card-top">
 
-                            <p>
-                                Marks:{" "}
-                                {a.marks !== null
-                                    ? `${a.marks}`
-                                    : "Not graded"}
-                            </p>
+                                <div>
+
+                                    <h2>{a.title}</h2>
+
+                                    <p className="assignment-description">
+                                        {a.description}
+                                    </p>
+
+                                </div>
+
+                                <div
+                                    className={
+                                        a.submitted
+                                            ? "submitted-badge"
+                                            : "pending-badge"
+                                    }
+                                >
+
+                                    {a.submitted
+                                        ? "Submitted"
+                                        : "Pending"}
+
+                                </div>
+
+                            </div>
+
+                            {/* DEADLINE */}
+
+                            <div className="deadline-row">
+
+                                <span>
+                                    📅 Deadline:
+                                </span>
+
+                                <p>
+                                    {new Date(
+                                        a.deadline
+                                    ).toLocaleString()}
+                                </p>
+
+                            </div>
+
+                            {/* DEADLINE EXPIRED */}
+
+                            {isExpired && (
+
+                                <div className="expired-box">
+                                    Deadline Passed ❌
+                                </div>
+
+                            )}
+
+                            {/* FILE */}
+
+                            {a.file_url && (
+
+                                <a
+                                    href={`http://127.0.0.1:5000${a.file_url}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="assignment-file-link"
+                                >
+                                    View Assignment File 📄
+                                </a>
+
+                            )}
+
+                            {/* STATUS */}
+
+                            <div className="assignment-status-grid">
+
+                                <div className="status-card">
+
+                                    <span>Status</span>
+
+                                    <h3>
+                                        {a.submitted
+                                            ? "Submitted"
+                                            : "Not Submitted"}
+                                    </h3>
+
+                                </div>
+
+                                <div className="status-card">
+
+                                    <span>Marks</span>
+
+                                    <h3>
+                                        {a.marks !== null
+                                            ? a.marks
+                                            : "Not graded"}
+                                    </h3>
+
+                                </div>
+
+                            </div>
+
+                            {/* SUBMISSION UI */}
+
+                            {!a.submitted && !isExpired && (
+
+                                <div className="submission-box">
+
+                                    <textarea
+                                        placeholder="Write your answer..."
+                                        onChange={(e) =>
+                                            setAnswers({
+                                                ...answers,
+                                                [a.id]: e.target.value
+                                            })
+                                        }
+                                    />
+
+                                    <input
+                                        type="file"
+                                        onChange={(e) =>
+                                            setFiles({
+                                                ...files,
+                                                [a.id]: e.target.files[0]
+                                            })
+                                        }
+                                    />
+
+                                    <button
+                                        onClick={() =>
+                                            handleSubmit(a.id)
+                                        }
+                                    >
+                                        Submit Assignment 🚀
+                                    </button>
+
+                                </div>
+
+                            )}
+
+                            {/* CLOSED */}
+
+                            {isExpired && !a.submitted && (
+
+                                <div className="closed-box">
+                                    Submission Closed
+                                </div>
+
+                            )}
+
                         </div>
 
-                        {/* 🔥 SUBMIT UI */}
-                        {!a.submitted && !isExpired && (
-                            <div className="mt-3">
+                    )
+                })}
 
-                                <textarea
-                                    placeholder="Write your answer..."
-                                    className="w-full p-2 bg-gray-700 rounded outline-none"
-                                    onChange={(e) =>
-                                        setAnswers({
-                                            ...answers,
-                                            [a.id]: e.target.value
-                                        })
-                                    }
-                                />
+            </div>
 
-                                <input
-                                    type="file"
-                                    className="mt-2"
-                                    onChange={(e) =>
-                                        setFiles({
-                                            ...files,
-                                            [a.id]: e.target.files[0]
-                                        })
-                                    }
-                                />
-
-                                <button
-                                    onClick={() => handleSubmit(a.id)}
-                                    className="bg-green-600 hover:bg-green-700 px-4 py-2 mt-3 rounded"
-                                >
-                                    Submit Assignment 🚀
-                                </button>
-                            </div>
-                        )}
-
-                        {/* 🔥 BLOCK IF DEADLINE PASSED */}
-                        {isExpired && !a.submitted && (
-                            <p className="text-red-400 mt-3">
-                                Submission closed
-                            </p>
-                        )}
-
-                    </div>
-                )
-            })}
         </div>
     )
 }

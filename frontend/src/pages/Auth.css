@@ -1,0 +1,324 @@
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #081028;
+}
+
+/* LEFT */
+
+.auth-left {
+  position: relative;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(59,130,246,0.9),
+      rgba(139,92,246,0.9)
+    ),
+    url("https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  padding: 60px;
+  overflow: hidden;
+}
+
+.auth-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+}
+
+.auth-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  max-width: 500px;
+}
+
+.auth-content h1 {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+.auth-content p {
+  font-size: 20px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+/* FEATURES */
+
+.auth-features {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.auth-features div {
+  background: rgba(255,255,255,0.12);
+  padding: 16px 20px;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+/* RIGHT */
+
+.auth-right {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  overflow: hidden;
+}
+
+/* CARD */
+
+.auth-card {
+  position: relative;
+  z-index: 5;
+  overflow: hidden;
+  backdrop-filter: blur(14px);  
+  width: 100%;
+  max-width: 430px;
+  background: #121c33;
+  border-radius: 28px;
+  padding: 40px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+  0 0 40px rgba(59,130,246,0.12),
+  0 0 90px rgba(59,130,246,0.08);
+}
+
+.auth-card h2 {
+  font-size: 34px;
+  margin-bottom: 12px;
+  color: #f8fafc;
+}
+
+.auth-subtitle {
+  color: #94a3b8;
+  margin-bottom: 30px;
+}
+
+/* INPUT */
+
+.auth-card input {
+  width: 100%;
+  background: #1b2742;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 16px;
+  color: white;
+  margin-bottom: 18px;
+}
+
+.auth-card input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* BUTTON */
+
+.auth-card button {
+  width: 100%;
+  border: none;
+  padding: 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s ease;
+}
+
+.auth-card button:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 20px rgba(59,130,246,0.45),
+    0 0 50px rgba(59,130,246,0.2);
+}
+
+/* SWITCH */
+
+.auth-switch {
+  margin-top: 24px;
+  text-align: center;
+  color: #94a3b8;
+}
+
+.auth-switch a {
+  color: #60a5fa;
+  text-decoration: none;
+}
+
+/* =========================
+   ENERGY RINGS
+========================= */
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* MAIN RING */
+
+.orb-1 {
+
+  width: 670px;
+  height: 670px;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border:
+    10px solid rgba(59,130,246,0.75);
+
+  box-shadow:
+    0 0 25px rgba(59,130,246,0.7),
+    0 0 60px rgba(139,92,246,0.45),
+    inset 0 0 25px rgba(59,130,246,0.5);
+
+  filter: blur(1px);
+
+  animation:
+    ringRotate 12s linear infinite,
+    ringMorph 6s ease-in-out infinite;
+}
+
+/* SECOND RING */
+
+.orb-2 {
+
+  width: 560px;
+  height: 560px;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border:
+    8px solid rgba(139,92,246,0.65);
+
+  box-shadow:
+    0 0 20px rgba(139,92,246,0.6),
+    0 0 50px rgba(59,130,246,0.4),
+    inset 0 0 20px rgba(139,92,246,0.45);
+
+  filter: blur(2px);
+
+  animation:
+    ringRotateReverse 16s linear infinite,
+    ringMorph 8s ease-in-out infinite reverse;
+}
+
+/* ROTATE */
+
+@keyframes ringRotate {
+
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotate(360deg);
+  }
+
+}
+
+/* REVERSE */
+
+@keyframes ringRotateReverse {
+
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotate(360deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotate(0deg);
+  }
+
+}
+
+/* MORPHING */
+
+@keyframes ringMorph {
+
+  0% {
+
+    border-radius:
+      60% 40% 55% 45% /
+      45% 55% 45% 55%;
+
+  }
+
+  25% {
+
+    border-radius:
+      40% 60% 35% 65% /
+      60% 40% 60% 40%;
+
+  }
+
+  50% {
+
+    border-radius:
+      65% 35% 60% 40% /
+      35% 65% 35% 65%;
+
+  }
+
+  75% {
+
+    border-radius:
+      45% 55% 40% 60% /
+      55% 45% 55% 45%;
+
+  }
+
+  100% {
+
+    border-radius:
+      60% 40% 55% 45% /
+      45% 55% 45% 55%;
+
+  }
+
+}
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
+  .auth-page {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-left {
+    display: none;
+  }
+
+  .auth-right {
+    padding: 20px;
+  }
+
+  .auth-card {
+    padding: 30px;
+  }
+
+}

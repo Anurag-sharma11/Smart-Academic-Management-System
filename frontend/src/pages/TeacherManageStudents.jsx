@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import API from "../services/api"
+import "./TeacherManageStudents.css"
 
 function TeacherManageStudents() {
   const [students, setStudents] = useState([])
@@ -67,106 +68,174 @@ function TeacherManageStudents() {
   )
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-10">
-      <h1 className="text-3xl font-bold mb-8">Manage Students</h1>
+    <div className="manage-students-page">
 
-      <input
-        type="text"
-        placeholder="Search by Name / Email / Student ID"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="w-full mb-6 p-3 rounded bg-gray-800"
-      />
+      {/* HEADER */}
+      <div className="manage-header">
 
-      <div className="overflow-x-auto">
-        <table className="w-full bg-gray-800 rounded-xl overflow-hidden">
-          <thead className="bg-gray-700">
-            <tr>
-              <th className="p-3 text-left">Name</th>
-              <th className="p-3 text-left">Email</th>
-              <th className="p-3 text-left">Course</th>
-              <th className="p-3 text-left">Semester</th>
-              <th className="p-3 text-left">Section</th>
-              <th className="p-3 text-left">Student ID</th>
-              <th className="p-3 text-left">Actions</th>
-            </tr>
-          </thead>
+        <div>
+          <h1>Manage Students 👨‍🎓</h1>
 
-          <tbody>
-            {filteredStudents.map((student) => (
-              <tr key={student.id} className="border-t border-gray-700">
-                <td className="p-3">{student.name}</td>
-                <td className="p-3">{student.email}</td>
-                <td className="p-3">{student.course}</td>
-                <td className="p-3">{student.class_name}</td>
-                <td className="p-3">{student.section}</td>
-                <td className="p-3">{student.student_id}</td>
+          <p>
+            Search, edit and manage all registered students.
+          </p>
+        </div>
 
-                <td className="p-3 flex gap-2">
-                  <button
-                    onClick={() => setEditingStudent({ ...student })}
-                    className="bg-yellow-500 px-3 py-1 rounded"
-                  >
-                    Edit
-                  </button>
+        <div className="student-count">
+          {filteredStudents.length} Students
+        </div>
 
-                  <button
-                    onClick={() => deleteStudent(student.id)}
-                    className="bg-red-600 px-3 py-1 rounded"
-                  >
-                    Delete
-                  </button>
-                </td>
+      </div>
+
+      {/* SEARCH BAR */}
+      <div className="search-container">
+
+        <input
+          type="text"
+          placeholder="Search by Name / Email / Student ID"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="search-input"
+        />
+
+      </div>
+
+      {/* TABLE CARD */}
+      <div className="table-card">
+
+        <div className="table-wrapper">
+
+          <table className="students-table">
+
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Course</th>
+                <th>Semester</th>
+                <th>Section</th>
+                <th>Student ID</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+
+              {filteredStudents.map((student) => (
+
+                <tr key={student.id}>
+
+                  <td>{student.name}</td>
+                  <td>{student.email}</td>
+                  <td>{student.course}</td>
+                  <td>{student.class_name}</td>
+                  <td>{student.section}</td>
+                  <td>{student.student_id}</td>
+
+                  <td>
+
+                    <div className="action-buttons">
+
+                      <button
+                        onClick={() =>
+                          setEditingStudent({ ...student })
+                        }
+                        className="edit-btn"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        onClick={() =>
+                          deleteStudent(student.id)
+                        }
+                        className="delete-btn"
+                      >
+                        Delete
+                      </button>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
       </div>
 
       {/* EDIT MODAL */}
-      {editingStudent && (
-        <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
-          <div className="bg-gray-800 p-8 rounded-xl w-[700px] max-h-[90vh] overflow-y-auto">
-            <h2 className="text-2xl font-bold mb-6">Edit Student</h2>
 
-            <div className="grid grid-cols-2 gap-4">
+      {editingStudent && (
+
+        <div className="modal-overlay">
+
+          <div className="edit-modal">
+
+            <h2>Edit Student ✏️</h2>
+
+            <div className="modal-grid">
+
               {Object.keys(editingStudent)
                 .filter((key) => key !== "id")
                 .map((field) => (
-                  <input
+
+                  <div
+                    className="modal-input-group"
                     key={field}
-                    type="text"
-                    value={editingStudent[field] || ""}
-                    placeholder={field.replaceAll("_", " ").toUpperCase()}
-                    onChange={(e) =>
-                      setEditingStudent({
-                        ...editingStudent,
-                        [field]: e.target.value
-                      })
-                    }
-                    className="p-3 rounded bg-gray-700"
-                  />
+                  >
+
+                    <label>
+                      {field.replaceAll("_", " ")}
+                    </label>
+
+                    <input
+                      type="text"
+                      value={editingStudent[field] || ""}
+                      onChange={(e) =>
+                        setEditingStudent({
+                          ...editingStudent,
+                          [field]: e.target.value
+                        })
+                      }
+                    />
+
+                  </div>
+
                 ))}
+
             </div>
 
-            <div className="flex gap-4 mt-6">
+            <div className="modal-actions">
+
               <button
                 onClick={updateStudent}
-                className="bg-green-600 px-4 py-2 rounded w-full"
+                className="save-btn"
               >
                 Save Changes
               </button>
 
               <button
                 onClick={() => setEditingStudent(null)}
-                className="bg-red-600 px-4 py-2 rounded w-full"
+                className="cancel-btn"
               >
                 Cancel
               </button>
+
             </div>
+
           </div>
+
         </div>
+
       )}
+
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import API from "../services/api"
+import "./TeacherEvaluate.css"
 
 function TeacherEvaluate() {
   const [attempts, setAttempts] = useState([])
@@ -58,82 +59,189 @@ function TeacherEvaluate() {
     console.log("FULL SELECTED:", selected)
     console.log("ANSWERS:", selected.answers)
     return (
-      <div className="min-h-screen bg-gray-900 text-white p-10">
+      <div className="evaluate-page">
 
-        <h2 className="text-2xl mb-6">Evaluate Submission 📝</h2>
+        {/* HEADER */}
 
-        {selected.answers.map((item, index) => (
-            <div key={index} className="bg-gray-800 p-4 mb-4 rounded">
+        <div className="evaluate-header">
 
-                <p className="mb-2 font-semibold">
-                    Q{index + 1}. {item.question}
+          <div>
+
+            <h1>Evaluate Submission 📝</h1>
+
+            <p>
+              Review student answers and assign marks.
+            </p>
+
+          </div>
+
+          <div className="evaluate-badge">
+            EVALUATION MODE
+          </div>
+
+        </div>
+
+        {/* ANSWERS */}
+
+        <div className="answers-container">
+
+          {selected.answers.map((item, index) => (
+
+            <div
+              key={index}
+              className="answer-card"
+            >
+
+              <div className="question-number">
+                Q{index + 1}
+              </div>
+
+              <h3>
+                {item.question}
+              </h3>
+
+              <div className="student-answer">
+
+                <span>Student Answer</span>
+
+                <p>
+                  {item.answer || "Not Answered"}
                 </p>
 
-                <p className="text-green-400">
-                    Answer: {item.answer || "Not Answered"}
-                </p>
+              </div>
 
             </div>
-        ))}
 
-        {/* MARKS INPUT */}
-        <input
-          type="number"
-          placeholder="Enter Marks"
-          value={marks}
-          className="p-2 bg-gray-700 rounded w-full mt-4"
-          onChange={(e) => setMarks(e.target.value)}
-        />
+          ))}
 
-        <button
-          onClick={submitMarks}
-          className="bg-green-600 px-4 py-2 rounded w-full mt-3"
-        >
-          Submit Marks
-        </button>
+        </div>
 
-        <button
-          onClick={() => setSelected(null)}
-          className="mt-4 text-gray-400"
-        >
-          ← Back
-        </button>
+        {/* MARKING */}
+
+        <div className="marking-card">
+
+          <h2>Assign Marks</h2>
+
+          <input
+            type="number"
+            placeholder="Enter Marks"
+            value={marks}
+            onChange={(e) => setMarks(e.target.value)}
+          />
+
+          <button
+            onClick={submitMarks}
+            className="submit-score-btn"
+          >
+            Submit Marks
+          </button>
+
+          <button
+            onClick={() => setSelected(null)}
+            className="back-btn"
+          >
+            ← Back to Submissions
+          </button>
+
+        </div>
+
       </div>
     )
   }
 
   // 📋 LIST VIEW
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-10">
+    <div className="evaluate-page">
 
-      <h1 className="text-3xl mb-8">
-        Student Submissions 📄
-      </h1>
+      {/* HEADER */}
+
+      <div className="evaluate-header">
+
+        <div>
+
+          <h1>Student Submissions 📄</h1>
+
+          <p>
+            Review assessment attempts and grading status.
+          </p>
+
+        </div>
+
+        <div className="evaluate-badge">
+          SUBMISSIONS
+        </div>
+
+      </div>
 
       {attempts.length === 0 ? (
-        <p>No submissions yet</p>
+
+        <div className="empty-state">
+          No submissions yet
+        </div>
+
       ) : (
-        <div className="space-y-4">
+
+        <div className="submissions-grid">
 
           {attempts.map((a) => (
-            <div key={a.id} className="bg-gray-800 p-4 rounded">
 
-            <p><b>Student ID:</b> {a.student_id}</p>
-            <p><b>Assessment:</b> {a.title}</p>
-            <p><b>Subject:</b> {a.subject}</p>
-            <p><b>Score:</b> {a.score ?? "Not graded"}</p>
+            <div
+              key={a.id}
+              className="submission-card"
+            >
+
+              <div className="submission-top">
+
+                <h2>{a.title}</h2>
+
+                <div
+                  className={
+                    a.score !== null
+                      ? "graded-badge"
+                      : "pending-badge"
+                  }
+                >
+                  {a.score !== null
+                    ? "Graded"
+                    : "Pending"}
+
+                </div>
+
+              </div>
+
+              <div className="submission-details">
+
+                <p>
+                  <span>Student ID:</span>
+                  {a.student_id}
+                </p>
+
+                <p>
+                  <span>Subject:</span>
+                  {a.subject}
+                </p>
+
+                <p>
+                  <span>Score:</span>
+
+                  {a.score ?? "Not graded"}
+                </p>
+
+              </div>
 
               <button
                 onClick={() => handleEvaluate(a)}
-                className="bg-blue-600 px-4 py-2 rounded mt-3"
+                className="evaluate-btn"
               >
-                Evaluate
+                Evaluate Submission
               </button>
 
             </div>
+
           ))}
 
         </div>
+
       )}
 
     </div>

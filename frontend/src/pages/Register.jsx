@@ -1,42 +1,83 @@
 import { Link } from "react-router-dom"
+import "./Auth.css"
 
 function Register() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="bg-gray-800 p-8 rounded-xl w-96 shadow-lg">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">
-          ALASK Register
-        </h2>
+    <div className="auth-page">
 
-        <input
-          type="text"
-          placeholder="Full Name"
-          className="w-full mb-4 p-3 rounded bg-gray-700 text-white outline-none"
-        />
+      {/* LEFT */}
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full mb-4 p-3 rounded bg-gray-700 text-white outline-none"
-        />
+      <div className="auth-left">
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full mb-4 p-3 rounded bg-gray-700 text-white outline-none"
-        />
+        <div className="auth-overlay"></div>
 
-        <button className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded">
-          Register
-        </button>
+        <div className="auth-content">
 
-        <p className="text-gray-400 text-sm mt-4 text-center">
-          Already have an account?{" "}
-          <Link to="/" className="text-blue-400">
-            Login
-          </Link>
-        </p>
+          <h1>Join ALASK 🚀</h1>
+
+          <p>
+            Experience intelligent academic management.
+          </p>
+
+          <div className="auth-features">
+
+            <div>📊 Attendance Tracking</div>
+            <div>📝 Smart Examination System</div>
+            <div>📘 Assignment Submission</div>
+            <div>🎯 Student Performance Insights</div>
+
+          </div>
+
+        </div>
+
       </div>
+
+      {/* RIGHT */}
+
+      <div className="auth-right">
+        <div className="orb orb-1"></div>
+        <div className="orb orb-2"></div>
+        <div className="auth-card">
+
+          <h2>Create Account</h2>
+
+          <p className="auth-subtitle">
+            Start your academic journey.
+          </p>
+
+          <input
+            type="text"
+            placeholder="Full Name"
+          />
+
+          <input
+            type="email"
+            placeholder="Email"
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+          />
+
+          <button>
+            Register
+          </button>
+
+          <p className="auth-switch">
+            Already have an account?
+            {" "}
+
+            <Link to="/">
+              Login
+            </Link>
+
+          </p>
+
+        </div>
+
+      </div>
+
     </div>
   )
 }

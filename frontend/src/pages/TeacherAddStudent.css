@@ -1,0 +1,107 @@
+.add-student-page {
+  min-height: 100vh;
+  background: #081028;
+  color: #f8fafc;
+  padding: 40px;
+}
+
+.add-student-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.add-student-header h1 {
+  font-size: 38px;
+  margin-bottom: 8px;
+}
+
+.add-student-header p {
+  color: #94a3b8;
+}
+
+.student-badge {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  padding: 12px 22px;
+  border-radius: 14px;
+  font-weight: bold;
+}
+
+.student-form-card {
+  background: #121c33;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  padding: 35px;
+}
+
+.student-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 10px;
+  color: #cbd5e1;
+}
+
+.form-group input,
+.form-group select {
+  background: #1b2742;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 14px;
+  border-radius: 14px;
+  color: white;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.disabled-input {
+  background: #2a334d !important;
+  cursor: not-allowed;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  border: none;
+  padding: 16px;
+  border-radius: 16px;
+  color: white;
+  cursor: pointer;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+@media (max-width: 768px) {
+
+  .add-student-page {
+    padding: 20px;
+  }
+
+  .student-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: span 1;
+  }
+
+}

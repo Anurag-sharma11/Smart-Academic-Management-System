@@ -1,0 +1,219 @@
+.student-assessment-page {
+  min-height: 100vh;
+  background: #081028;
+  color: #f8fafc;
+  padding: 40px;
+}
+
+/* HEADER */
+
+.assessment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.assessment-header h1 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.assessment-header p {
+  color: #94a3b8;
+}
+
+.assessment-badge {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  padding: 12px 22px;
+  border-radius: 14px;
+  font-weight: bold;
+}
+
+/* GRID */
+
+.assessment-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* CARD */
+
+.assessment-card {
+  background: #121c33;
+  border-radius: 24px;
+  padding: 30px;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: 0.3s ease;
+}
+
+.assessment-card:hover {
+  transform: translateY(-4px);
+}
+
+.assessment-icon {
+  width: 65px;
+  height: 65px;
+  border-radius: 18px;
+  background: rgba(59,130,246,0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  margin-bottom: 24px;
+}
+
+.assessment-card h2 {
+  margin-bottom: 12px;
+}
+
+.assessment-card p {
+  color: #94a3b8;
+  margin-bottom: 25px;
+}
+
+.assessment-card button {
+  width: 100%;
+  border: none;
+  padding: 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  cursor: pointer;
+}
+
+/* TOPBAR */
+
+.test-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.test-topbar h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.test-topbar p {
+  color: #94a3b8;
+}
+
+/* TIMER */
+
+.timer-box {
+  background: rgba(239,68,68,0.15);
+  color: #f87171;
+  padding: 16px 22px;
+  border-radius: 16px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* QUESTIONS */
+
+.questions-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* QUESTION CARD */
+
+.question-card {
+  background: #121c33;
+  border-radius: 24px;
+  padding: 28px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.question-badge {
+  display: inline-block;
+  background: rgba(59,130,246,0.15);
+  color: #93c5fd;
+  padding: 8px 14px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.question-card h2 {
+  margin-bottom: 24px;
+}
+
+/* OPTIONS */
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.option-item {
+  background: #1b2742;
+  padding: 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* TEXTAREA */
+
+.question-card textarea {
+  width: 100%;
+  min-height: 140px;
+  background: #1b2742;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 18px;
+  color: white;
+  resize: none;
+}
+
+.question-card textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* SUBMIT */
+
+.submit-test-btn {
+  width: 100%;
+  margin-top: 35px;
+  border: none;
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
+  .student-assessment-page {
+    padding: 20px;
+  }
+
+  .assessment-header,
+  .test-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .assessment-header h1,
+  .test-topbar h1 {
+    font-size: 32px;
+  }
+
+  .assessment-grid {
+    grid-template-columns: 1fr;
+  }
+
+}

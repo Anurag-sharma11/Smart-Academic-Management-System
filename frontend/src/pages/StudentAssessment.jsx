@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import API from "../services/api"
+import "./StudentAssessment.css"
 
 function StudentAssessment() {
   const [assessments, setAssessments] = useState([])
@@ -83,103 +84,195 @@ function StudentAssessment() {
   // 🧾 TEST LIST UI
   if (!selectedTest) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white p-10">
+      <div className="student-assessment-page">
 
-        <h1 className="text-3xl font-bold mb-8">
-          Available Tests 📝
-        </h1>
+        {/* HEADER */}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="assessment-header">
+
+          <div>
+
+            <h1>Available Tests 📝</h1>
+
+            <p>
+              Start assessments and evaluate your academic performance.
+            </p>
+
+          </div>
+
+          <div className="assessment-badge">
+            ONLINE EXAMINATION
+          </div>
+
+        </div>
+
+        {/* TEST GRID */}
+
+        <div className="assessment-grid">
 
           {assessments.map((a) => (
+
             <div
               key={a.id}
-              className="bg-gray-800 p-5 rounded-xl shadow hover:bg-gray-700 transition"
+              className="assessment-card"
             >
-              <h2 className="text-xl font-semibold">{a.title}</h2>
 
-              <p className="text-gray-400 mb-4">
-                {a.subject}
-              </p>
+              <div className="assessment-icon">
+                📝
+              </div>
+
+              <h2>{a.title}</h2>
+
+              <p>{a.subject}</p>
 
               <button
                 onClick={() => startTest(a.id)}
-                className="bg-blue-600 px-4 py-2 rounded w-full hover:bg-blue-700"
               >
                 Start Test 🚀
               </button>
+
             </div>
+
           ))}
 
         </div>
+
       </div>
     )
   }
 
   // 🧠 TEST UI
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-10">
+    <div className="student-assessment-page">
 
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Test Started</h2>
-        <div className="text-lg bg-red-600 px-4 py-2 rounded">
+      {/* TOP BAR */}
+
+      <div className="test-topbar">
+
+        <div>
+
+          <h1>Assessment Started 🧠</h1>
+
+          <p>
+            Complete all questions before timer ends.
+          </p>
+
+        </div>
+
+        <div className="timer-box">
           ⏱ {formatTime()}
         </div>
+
       </div>
 
-      <div className="space-y-6">
+      {/* QUESTIONS */}
+
+      <div className="questions-wrapper">
 
         {questions.map((q, index) => (
-          <div key={q.id} className="bg-gray-800 p-5 rounded-lg">
 
-            <p className="mb-4 font-semibold">
-              Q{index + 1}. {q.question_text}
-            </p>
+          <div
+            key={q.id}
+            className="question-card"
+          >
+
+            <div className="question-badge">
+              Question {index + 1}
+            </div>
+
+            <h2>
+              {q.question_text}
+            </h2>
 
             {/* MCQ */}
-            {q.type === "mcq" && q.options.map((opt, i) => (
-              <label key={i} className="block mb-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name={q.id}
-                  className="mr-2"
-                  onChange={() => handleAnswer(q.id, opt)}
-                />
-                {opt}
-              </label>
-            ))}
 
-            {/* TRUE/FALSE */}
-            {q.type === "tf" && ["True", "False"].map((opt, i) => (
-              <label key={i} className="block mb-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name={q.id}
-                  className="mr-2"
-                  onChange={() => handleAnswer(q.id, opt)}
-                />
-                {opt}
-              </label>
-            ))}
+            {q.type === "mcq" && (
 
-            {/* Q&A */}
+              <div className="options-list">
+
+                {q.options.map((opt, i) => (
+
+                  <label
+                    key={i}
+                    className="option-item"
+                  >
+
+                    <input
+                      type="radio"
+                      name={q.id}
+                      onChange={() =>
+                        handleAnswer(q.id, opt)
+                      }
+                    />
+
+                    {opt}
+
+                  </label>
+
+                ))}
+
+              </div>
+
+            )}
+
+            {/* TRUE FALSE */}
+
+            {q.type === "tf" && (
+
+              <div className="options-list">
+
+                {["True", "False"].map((opt, i) => (
+
+                  <label
+                    key={i}
+                    className="option-item"
+                  >
+
+                    <input
+                      type="radio"
+                      name={q.id}
+                      onChange={() =>
+                        handleAnswer(q.id, opt)
+                      }
+                    />
+
+                    {opt}
+
+                  </label>
+
+                ))}
+
+              </div>
+
+            )}
+
+            {/* QA */}
+
             {q.type === "qa" && (
+
               <textarea
                 placeholder="Write your answer..."
-                className="w-full p-2 rounded bg-gray-700"
-                onChange={(e) => handleAnswer(q.id, e.target.value)}
+                onChange={(e) =>
+                  handleAnswer(
+                    q.id,
+                    e.target.value
+                  )
+                }
               />
+
             )}
 
           </div>
+
         ))}
 
       </div>
 
       {/* SUBMIT */}
+
       <button
         onClick={handleSubmit}
-        className="bg-green-600 px-6 py-3 rounded w-full mt-8 text-lg hover:bg-green-700"
+        className="submit-test-btn"
       >
         Submit Test ✅
       </button>

@@ -1,5 +1,6 @@
 import { useState } from "react"
 import API from "../services/api"
+import "./TeacherAssessment.css"
 
 function TeacherAssessment() {
   const [title, setTitle] = useState("")
@@ -86,122 +87,220 @@ function TeacherAssessment() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
+    <div className="assessment-page">
 
-      <h1 className="text-3xl font-bold mb-6">
-        Create Assessment 📝
-      </h1>
+      {/* HEADER */}
 
-      <div className="bg-gray-800 p-6 rounded-xl shadow-lg">
+      <div className="assessment-header">
 
-        {/* TITLE + SUBJECT */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <input
-            placeholder="Title"
-            className="p-2 rounded bg-gray-700"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+        <div>
 
-          <input
-            placeholder="Subject"
-            className="p-2 rounded bg-gray-700"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-          />
+          <h1>Create Assessment 📝</h1>
+
+          <p>
+            Design smart assessments and manage question sets.
+          </p>
+
         </div>
 
-        {/* ADD BUTTON */}
+        <div className="assessment-badge">
+          ASSESSMENT PANEL
+        </div>
+
+      </div>
+
+      {/* MAIN CARD */}
+
+      <div className="assessment-card">
+
+        {/* TOP FORM */}
+
+        <div className="assessment-top-grid">
+
+          <div className="input-group">
+
+            <label>Assessment Title</label>
+
+            <input
+              placeholder="Enter assessment title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+
+          </div>
+
+          <div className="input-group">
+
+            <label>Subject</label>
+
+            <input
+              placeholder="Enter subject"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+            />
+
+          </div>
+
+        </div>
+
+        {/* ADD QUESTION */}
+
         <button
           onClick={addQuestion}
-          className="bg-indigo-600 px-4 py-2 rounded mb-6"
+          className="add-question-btn"
         >
           + Add Question
         </button>
 
         {/* QUESTIONS */}
-        {questions.map((q, index) => (
-          <div key={index} className="bg-gray-700 p-4 mb-4 rounded-lg relative">
 
-            {/* REMOVE BUTTON */}
-            <button
-              onClick={() => removeQuestion(index)}
-              className="absolute top-2 right-2 text-red-400"
+        <div className="questions-container">
+
+          {questions.map((q, index) => (
+
+            <div
+              key={index}
+              className="question-card"
             >
-              ✖
-            </button>
 
-            <h3 className="mb-2 font-semibold">
-              Question {index + 1}
-            </h3>
+              {/* TOP */}
 
-            {/* QUESTION TEXT */}
-            <input
-              placeholder="Enter question"
-              className="w-full p-2 mb-2 rounded bg-gray-600"
-              value={q.question_text}
-              onChange={(e) =>
-                handleQuestionChange(index, "question_text", e.target.value)
-              }
-            />
+              <div className="question-top">
 
-            {/* TYPE */}
-            <select
-              className="w-full p-2 mb-2 rounded bg-gray-600"
-              value={q.type}
-              onChange={(e) =>
-                handleQuestionChange(index, "type", e.target.value)
-              }
-            >
-              <option value="mcq">MCQ</option>
-              <option value="tf">True / False</option>
-              <option value="qa">Q&A</option>
-            </select>
+                <h3>
+                  Question {index + 1}
+                </h3>
 
-            {/* MCQ OPTIONS */}
-            {q.type === "mcq" && q.options.map((opt, i) => (
-              <input
-                key={i}
-                placeholder={`Option ${i + 1}`}
-                className="w-full p-2 mb-2 rounded bg-gray-600"
-                value={opt}
-                onChange={(e) =>
-                  handleOptionChange(index, i, e.target.value)
-                }
-              />
-            ))}
+                <button
+                  onClick={() => removeQuestion(index)}
+                  className="remove-btn"
+                >
+                  ✖
+                </button>
 
-            {/* TRUE/FALSE */}
-            {q.type === "tf" && (
-              <div className="text-gray-300 mb-2">
-                Options: True / False
               </div>
-            )}
 
-            {/* CORRECT ANSWER (ONLY FOR MCQ & TF) */}
-            {q.type !== "qa" && (
-              <input
-                placeholder="Correct Answer"
-                className="w-full p-2 rounded bg-gray-600"
-                value={q.correct_answer}
-                onChange={(e) =>
-                  handleQuestionChange(index, "correct_answer", e.target.value)
-                }
-              />
-            )}
+              {/* QUESTION */}
 
-          </div>
-        ))}
+              <div className="input-group">
+
+                <label>Question Text</label>
+
+                <input
+                  placeholder="Enter question"
+                  value={q.question_text}
+                  onChange={(e) =>
+                    handleQuestionChange(
+                      index,
+                      "question_text",
+                      e.target.value
+                    )
+                  }
+                />
+
+              </div>
+
+              {/* TYPE */}
+
+              <div className="input-group">
+
+                <label>Question Type</label>
+
+                <select
+                  value={q.type}
+                  onChange={(e) =>
+                    handleQuestionChange(
+                      index,
+                      "type",
+                      e.target.value
+                    )
+                  }
+                >
+                  <option value="mcq">MCQ</option>
+                  <option value="tf">True / False</option>
+                  <option value="qa">Q&A</option>
+                </select>
+
+              </div>
+
+              {/* MCQ */}
+
+              {q.type === "mcq" && (
+
+                <div className="options-grid">
+
+                  {q.options.map((opt, i) => (
+
+                    <input
+                      key={i}
+                      placeholder={`Option ${i + 1}`}
+                      value={opt}
+                      onChange={(e) =>
+                        handleOptionChange(
+                          index,
+                          i,
+                          e.target.value
+                        )
+                      }
+                    />
+
+                  ))}
+
+                </div>
+
+              )}
+
+              {/* TF */}
+
+              {q.type === "tf" && (
+
+                <div className="tf-box">
+                  Options: True / False
+                </div>
+
+              )}
+
+              {/* ANSWER */}
+
+              {q.type !== "qa" && (
+
+                <div className="input-group">
+
+                  <label>Correct Answer</label>
+
+                  <input
+                    placeholder="Enter correct answer"
+                    value={q.correct_answer}
+                    onChange={(e) =>
+                      handleQuestionChange(
+                        index,
+                        "correct_answer",
+                        e.target.value
+                      )
+                    }
+                  />
+
+                </div>
+
+              )}
+
+            </div>
+
+          ))}
+
+        </div>
 
         {/* SUBMIT */}
+
         <button
           onClick={submitAssessment}
-          className="bg-green-600 px-6 py-2 rounded w-full mt-4"
+          className="submit-assessment-btn"
         >
           Submit Assessment
         </button>
 
       </div>
+
     </div>
   )
 }

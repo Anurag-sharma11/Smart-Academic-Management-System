@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import API from "../services/api"
+import "./StudentDashboard.css"
 
 function StudentDashboard() {
   const [data, setData] = useState(null)
-  const [predictionData, setPredictionData] = useState(null)
 
   const navigate = useNavigate()
 
@@ -18,129 +18,181 @@ function StudentDashboard() {
     }
   }
 
-  // 🤖 FETCH ML PREDICTION
-  const fetchPrediction = async (studentId) => {
-    try {
-      const res = await API.get(`/attendance/predict/${studentId}`)
-      setPredictionData(res.data)
-    } catch (err) {
-      console.log("Prediction error:", err)
-    }
-  }
 
   useEffect(() => {
     fetchData()
   }, [])
 
-  useEffect(() => {
-    if (data && data.student_id) {
-      fetchPrediction(data.student_id)
-    }
-  }, [data])
 
   if (!data) return <p className="text-white p-10">Loading...</p>
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-10">
+    <div className="student-dashboard-page">
 
-      <h1 className="text-3xl font-bold mb-6">
-        Student Dashboard 🎓
-      </h1>
+      {/* HEADER */}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="student-dashboard-header">
 
-        {/* 📊 ATTENDANCE */}
-        <div
-          onClick={() => navigate("/student-attendance")}
-          className="bg-gray-800 p-5 rounded cursor-pointer hover:bg-gray-700 transition"
-        >
-          <h2>📊 Attendance</h2>
-          <p className="text-2xl">{data.attendance}%</p>
-        </div>
+        <div>
 
-        {/* 🤖 ML PREDICTION */}
-        <div
-          onClick={() => navigate("/student-attendance")}
-          className="bg-gray-800 p-5 rounded cursor-pointer hover:bg-gray-700 transition"
-        >
-          <h2>🤖 Prediction</h2>
+          <h1>Welcome Back 🎓</h1>
 
-          {predictionData ? (
-            <>
-              <p className="text-2xl">
-                {predictionData.predicted_next_week}%
-              </p>
-
-              <p
-                className={
-                  predictionData.risk === "High Risk"
-                    ? "text-red-500 font-bold"
-                    : predictionData.risk === "Medium Risk"
-                      ? "text-yellow-400 font-bold"
-                      : "text-green-400 font-bold"
-                }
-              >
-                {predictionData.risk}
-              </p>
-
-              <div className="mt-2 text-sm text-gray-400">
-                <div>Accuracy: {predictionData.accuracy}%</div>
-                <div>MAE: {predictionData.mae}</div>
-              </div>
-            </>
-          ) : (
-            <p>Loading...</p>
-          )}
-        </div>
-
-        {/* 📘 TOTAL ASSIGNMENTS */}
-        <div
-          onClick={() => navigate("/student-assignments")}
-          className="bg-gray-800 p-5 rounded cursor-pointer hover:bg-gray-700 transition"
-        >
-          <h2>📘 Total Assignments</h2>
-          <p className="text-2xl">{data.total_assignments}</p>
-        </div>
-
-        {/* 📝 NEW: ASSESSMENT (ADDED) */}
-        <div
-          onClick={() => navigate("/student-assessment")}
-          className="bg-gray-800 p-5 rounded cursor-pointer hover:bg-gray-700 transition border border-indigo-500"
-        >
-          <h2>📝 Assessments</h2>
-          <p className="text-sm text-gray-400 mt-2">
-            Attempt your tests
+          <p>
+            Track your academics, attendance and performance insights.
           </p>
+
         </div>
 
-        {/* ✅ SUBMITTED */}
-        <div
-          onClick={() => navigate("/student-assignments?filter=submitted")}
-          className="bg-gray-800 p-5 rounded cursor-pointer hover:bg-gray-700 transition"
-        >
-          <h2>✅ Submitted</h2>
-          <p className="text-2xl">{data.submitted}</p>
-        </div>
-
-        {/* ⏳ PENDING */}
-        <div
-          onClick={() => navigate("/student-assignments?filter=pending")}
-          className="bg-gray-800 p-5 rounded cursor-pointer hover:bg-gray-700 transition"
-        >
-          <h2>⏳ Pending</h2>
-          <p className="text-2xl">{data.pending}</p>
-        </div>
-
-        {/* 🎯 AVG MARKS */}
-        <div
-          onClick={() => navigate("/student-assignments")}
-          className="bg-gray-800 p-5 rounded cursor-pointer hover:bg-gray-700 transition"
-        >
-          <h2>🎯 Avg Marks</h2>
-          <p className="text-2xl">{data.avg_marks}</p>
+        <div className="student-profile-badge">
+          STUDENT PORTAL
         </div>
 
       </div>
+
+      {/* DASHBOARD GRID */}
+
+      <div className="student-dashboard-grid">
+
+        {/* ATTENDANCE */}
+
+        <div
+          onClick={() => navigate("/student-attendance")}
+          className="dashboard-card attendance-card"
+        >
+
+          <div className="card-icon">
+            📊
+          </div>
+
+          <h2>Attendance</h2>
+
+          <h1>{data.attendance}%</h1>
+
+          <p>
+            Overall attendance percentage
+          </p>
+
+        </div>
+
+        {/* PREDICTION */}
+
+        <div
+          onClick={() => navigate("/student-attendance")}
+          className="dashboard-card prediction-card"
+        >
+
+          <div className="card-icon">
+            🤖
+          </div>
+
+          <h2>AI Prediction</h2>
+          <p className="text-2xl">
+            AI Module Restricted
+          </p>
+
+          <p className="mt-3 text-gray-400">
+            Prediction access available through faculty analytics.
+          </p>
+          
+        </div>
+
+        {/* ASSIGNMENTS */}
+
+        <div
+          onClick={() => navigate("/student-assignments")}
+          className="dashboard-card"
+        >
+
+          <div className="card-icon">
+            📘
+          </div>
+
+          <h2>Total Assignments</h2>
+
+          <h1>{data.total_assignments}</h1>
+
+          <p>
+            Assignments available
+          </p>
+
+        </div>
+
+        {/* ASSESSMENTS */}
+
+        <div
+          onClick={() => navigate("/student-assessment")}
+          className="dashboard-card assessment-card"
+        >
+
+          <div className="card-icon">
+            📝
+          </div>
+
+          <h2>Assessments</h2>
+
+          <p className="small-text">
+            Attempt your tests
+          </p>
+
+        </div>
+
+        {/* SUBMITTED */}
+
+        <div
+          onClick={() =>
+            navigate("/student-assignments?filter=submitted")
+          }
+          className="dashboard-card success-card"
+        >
+
+          <div className="card-icon">
+            ✅
+          </div>
+
+          <h2>Submitted</h2>
+
+          <h1>{data.submitted}</h1>
+
+        </div>
+
+        {/* PENDING */}
+
+        <div
+          onClick={() =>
+            navigate("/student-assignments?filter=pending")
+          }
+          className="dashboard-card warning-card"
+        >
+
+          <div className="card-icon">
+            ⏳
+          </div>
+
+          <h2>Pending</h2>
+
+          <h1>{data.pending}</h1>
+
+        </div>
+
+        {/* AVG MARKS */}
+
+        <div
+          onClick={() => navigate("/student-assignments")}
+          className="dashboard-card marks-card"
+        >
+
+          <div className="card-icon">
+            🎯
+          </div>
+
+          <h2>Average Marks</h2>
+
+          <h1>{data.avg_marks}</h1>
+
+        </div>
+
+      </div>
+
     </div>
   )
 }

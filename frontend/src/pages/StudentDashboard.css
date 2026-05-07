@@ -1,0 +1,168 @@
+.student-dashboard-page {
+  min-height: 100vh;
+  background: #081028;
+  color: #f8fafc;
+  padding: 40px;
+}
+
+/* HEADER */
+
+.student-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.student-dashboard-header h1 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.student-dashboard-header p {
+  color: #94a3b8;
+}
+
+.student-profile-badge {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  padding: 12px 22px;
+  border-radius: 14px;
+  font-weight: bold;
+}
+
+/* GRID */
+
+.student-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+/* CARD */
+
+.dashboard-card {
+  background: #121c33;
+  border-radius: 24px;
+  padding: 28px;
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+}
+
+.card-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(59,130,246,0.15);
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  margin-bottom: 22px;
+}
+
+.dashboard-card h2 {
+  margin-bottom: 15px;
+}
+
+.dashboard-card h1 {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+.dashboard-card p {
+  color: #94a3b8;
+}
+
+.small-text {
+  margin-top: 15px;
+}
+
+/* SPECIAL */
+
+.attendance-card {
+  border-color: rgba(34,197,94,0.3);
+}
+
+.prediction-card {
+  border-color: rgba(139,92,246,0.3);
+}
+
+.assessment-card {
+  border-color: rgba(99,102,241,0.3);
+}
+
+.success-card {
+  border-color: rgba(34,197,94,0.3);
+}
+
+.warning-card {
+  border-color: rgba(234,179,8,0.3);
+}
+
+.marks-card {
+  border-color: rgba(59,130,246,0.3);
+}
+
+/* RISK */
+
+.risk {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.high-risk {
+  background: rgba(239,68,68,0.15);
+  color: #f87171;
+}
+
+.medium-risk {
+  background: rgba(234,179,8,0.15);
+  color: #facc15;
+}
+
+.low-risk {
+  background: rgba(34,197,94,0.15);
+  color: #4ade80;
+}
+
+/* META */
+
+.prediction-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #94a3b8;
+  margin-top: 10px;
+}
+
+/* MOBILE */
+
+@media (max-width: 1000px) {
+
+  .student-dashboard-page {
+    padding: 20px;
+  }
+
+  .student-dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .student-dashboard-header h1 {
+    font-size: 32px;
+  }
+
+  .student-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
