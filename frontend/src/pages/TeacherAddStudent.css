@@ -51,6 +51,12 @@
   color: #cbd5e1;
 }
 
+.required-star {
+  color: #ef4444;
+  font-weight: bold;
+  margin-left: 4px;
+}
+
 .form-group input,
 .form-group select {
   background: #1b2742;

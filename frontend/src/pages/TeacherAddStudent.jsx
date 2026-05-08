@@ -3,7 +3,12 @@ import API from "../services/api"
 import "./TeacherAddStudent.css"
 
 function TeacherAddStudent() {
-  const today = new Date().toISOString().split("T")[0]
+  const getCurrentDateTime = () => {
+    const now = new Date()
+    const offset = now.getTimezoneOffset()
+    const localTime = new Date(now.getTime() - offset * 60000)
+    return localTime.toISOString().slice(0, 16)
+  }
 
   const [sameEnrollment, setSameEnrollment] = useState(false)
   const [useToday, setUseToday] = useState(true)
@@ -19,14 +24,42 @@ function TeacherAddStudent() {
     course: "",
     class_name: "",
     section: "",
-    date_added: today
+    date_added: getCurrentDateTime()
   })
 
   const handleChange = (e) => {
+    const { name, value } = e.target
+
+    // Name: letters + spaces only
+    if (name === "name") {
+      if (!/^[A-Za-z\s]*$/.test(value)) return
+    }
+
+    // Numeric only fields
+    if (
+      name === "phone" ||
+      name === "class_name" ||
+      name === "student_id"
+    ) {
+      if (!/^\d*$/.test(value)) return
+    }
+
     setForm({
       ...form,
-      [e.target.name]: e.target.value
+      [name]: value
     })
+  }
+
+  const handleUseTodayToggle = () => {
+    const newValue = !useToday
+    setUseToday(newValue)
+
+    if (newValue) {
+      setForm({
+        ...form,
+        date_added: getCurrentDateTime()
+      })
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -53,10 +86,11 @@ function TeacherAddStudent() {
         course: "",
         class_name: "",
         section: "",
-        date_added: today
+        date_added: getCurrentDateTime()
       })
 
       setSameEnrollment(false)
+      setUseToday(true)
 
     } catch (err) {
       console.log(err.response?.data)
@@ -97,7 +131,7 @@ function TeacherAddStudent() {
         >
 
           <div className="form-group">
-            <label>Full Name</label>
+            <label>Full Name <span className="required-star">*</span></label>
 
             <input
               type="text"
@@ -110,7 +144,7 @@ function TeacherAddStudent() {
           </div>
 
           <div className="form-group">
-            <label>Email Address</label>
+            <label>Email Address <span className="required-star">*</span></label>
 
             <input
               type="email"
@@ -123,7 +157,7 @@ function TeacherAddStudent() {
           </div>
 
           <div className="form-group">
-            <label>Age</label>
+            <label>Age <span className="required-star">*</span></label>
 
             <input
               type="number"
@@ -136,7 +170,7 @@ function TeacherAddStudent() {
           </div>
 
           <div className="form-group">
-            <label>Gender</label>
+            <label>Gender <span className="required-star">*</span></label>
 
             <select
               name="gender"
@@ -150,7 +184,7 @@ function TeacherAddStudent() {
           </div>
 
           <div className="form-group">
-            <label>Phone Number</label>
+            <label>Phone Number <span className="required-star">*</span></label>
 
             <input
               type="text"
@@ -158,12 +192,15 @@ function TeacherAddStudent() {
               placeholder="Enter phone number"
               value={form.phone}
               onChange={handleChange}
+              maxLength={10}
+              pattern="\d{10}"
+              title="Phone number must be exactly 10 digits"
               required
             />
           </div>
 
           <div className="form-group">
-            <label>Course</label>
+            <label>Course <span className="required-star">*</span></label>
 
             <input
               type="text"
@@ -176,7 +213,7 @@ function TeacherAddStudent() {
           </div>
 
           <div className="form-group">
-            <label>Semester</label>
+            <label>Semester <span className="required-star">*</span></label>
 
             <input
               type="text"
@@ -189,7 +226,7 @@ function TeacherAddStudent() {
           </div>
 
           <div className="form-group">
-            <label>Section</label>
+            <label>Section <span className="required-star">*</span></label>
 
             <input
               type="text"
@@ -202,7 +239,7 @@ function TeacherAddStudent() {
           </div>
 
           <div className="form-group">
-            <label>Enrollment Number</label>
+            <label>Enrollment Number <span className="required-star">*</span></label>
 
             <input
               type="text"
@@ -211,6 +248,8 @@ function TeacherAddStudent() {
               value={form.enrollment_no}
               onChange={(e) => {
                 const value = e.target.value
+
+                if (!/^\d*$/.test(value)) return
 
                 setForm({
                   ...form,
@@ -225,7 +264,7 @@ function TeacherAddStudent() {
           </div>
 
           <div className="form-group">
-            <label>Student ID</label>
+            <label>Student ID <span className="required-star">*</span></label>
 
             <input
               type="text"
@@ -239,6 +278,7 @@ function TeacherAddStudent() {
               onChange={handleChange}
               disabled={sameEnrollment}
               className={sameEnrollment ? "disabled-input" : ""}
+              inputMode="numeric"
               required
             />
           </div>
@@ -273,11 +313,11 @@ function TeacherAddStudent() {
             <input
               type="checkbox"
               checked={useToday}
-              onChange={() => setUseToday(!useToday)}
+              onChange={handleUseTodayToggle}
             />
 
             <label>
-              Use Today's Date
+              Use Current Date & Time
             </label>
 
           </div>
@@ -285,13 +325,14 @@ function TeacherAddStudent() {
           {!useToday && (
             <div className="form-group full-width">
 
-              <label>Date Added</label>
+              <label>Admission Date & Time <span className="required-star">*</span></label>
 
               <input
-                type="date"
+                type="datetime-local"
                 name="date_added"
                 value={form.date_added}
                 onChange={handleChange}
+                required
               />
 
             </div>

@@ -43,7 +43,7 @@ def register():
         employee_id=data.get("employee_id"),
         department=data.get("department"),
 
-        date_added=datetime.strptime(date_added, "%Y-%m-%d").date() if date_added else None
+        date_added=datetime.strptime(date_added, "%Y-%m-%dT%H:%M") if date_added else None
     )
 
     user.set_password(password)

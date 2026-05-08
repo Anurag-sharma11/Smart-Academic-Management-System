@@ -30,7 +30,7 @@ class User(db.Model):
     department = db.Column(db.String(100), nullable=True)
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    date_added = db.Column(db.Date, nullable=True)
+    date_added = db.Column(db.DateTime, nullable=True)
 
     can_access_teacher = db.Column(db.Boolean, default=False)
     can_access_student = db.Column(db.Boolean, default=False)
