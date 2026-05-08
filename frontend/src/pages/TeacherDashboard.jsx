@@ -36,6 +36,7 @@ function TeacherDashboard() {
 
   return (
     <div className="teacher-dashboard">
+      <div className="soft-blob"></div>
 
       {/* HEADER */}
       <div className="dashboard-header">
@@ -56,7 +57,7 @@ function TeacherDashboard() {
 
         <div className="stat-card">
           <h3>Total Students</h3>
-          <h2>128</h2>
+          <h2>83</h2>
           <span>+12 this month</span>
         </div>
 
@@ -120,6 +121,18 @@ function TeacherDashboard() {
           >
             Predict Attendance
           </button>
+
+          <div className="ai-insight-box">
+
+            <h4>✨ AI Insights</h4>
+
+            <ul>
+              <li>Attendance trends are analyzed weekly</li>
+              <li>Low attendance patterns are automatically detected</li>
+              <li>Prediction accuracy improves with more records</li>
+            </ul>
+
+          </div>
 
           {prediction && (
             <div className="prediction-result">
