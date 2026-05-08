@@ -26,3 +26,5 @@ Thumbs.db
 
 # Database (optional if local)
 *.db
+
+backend/uploads/
