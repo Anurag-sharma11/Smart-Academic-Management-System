@@ -1,7 +1,5 @@
 import { Routes, Route } from "react-router-dom"
 
-import Login from "./pages/Login"
-import Register from "./pages/Register"
 import AdminDashboard from "./pages/AdminDashboard"
 import TeacherDashboard from "./pages/TeacherDashboard"
 import StudentDashboard from "./pages/StudentDashboard"
@@ -17,12 +15,13 @@ import TeacherAddStudent from "./pages/TeacherAddStudent"
 import TeacherManageStudents from "./pages/TeacherManageStudents"
 import TeacherAttendanceHistory from "./pages/TeacherAttendanceHistory"
 import TeacherAnalytics from "./pages/TeacherAnalytics"
+import AuthPage from "./pages/AuthPage"
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/" element={<AuthPage />} />
+      <Route path="/register" element={<AuthPage />} />
 
       {/* Admin Dashboard */}
       <Route
