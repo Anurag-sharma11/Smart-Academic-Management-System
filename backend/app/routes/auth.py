@@ -1,17 +1,47 @@
 from flask import Blueprint, request, jsonify
 from app.extensions import db
 from app.models.user import User
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt
 from datetime import timedelta, datetime
+from flask_mail import Message
+from app.extensions import mail
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/api/auth")
+
+def send_student_credentials(student_email, student_name, password):
+    msg = Message(
+        subject="Welcome to ALASK - Student Account Created",
+        recipients=[student_email]
+    )
+
+    msg.body = f"""
+Hello {student_name},
+
+Your ALASK student account has been created successfully.
+
+Login Credentials:
+
+Email: {student_email}
+Password: {password}
+
+Please login using these credentials.
+
+ALASK Academic Management System
+"""
+
+    mail.send(msg)
 
 
 # ---------------- REGISTER ----------------
 @auth_bp.route("/register", methods=["POST"])
+@jwt_required()
 def register():
     data = request.get_json()
+    claims = get_jwt()
 
+    if claims.get("role") not in ["teacher", "admin"]:
+        return jsonify({"error": "Access denied"}), 403
+    
     name = data.get("name")
     email = data.get("email")
     password = data.get("password")
@@ -50,6 +80,13 @@ def register():
 
     db.session.add(user)
     db.session.commit()
+    
+    if role == "student":
+        send_student_credentials(
+            student_email=user.email,
+            student_name=user.name,
+            password=password
+        )
 
     return jsonify({
         "message": "User registered successfully",
@@ -81,5 +118,7 @@ def login():
 
     return jsonify({
         "access_token": access_token,
-        "role": user.role
+        "role": user.role,
+        "name": user.name,
+        "email": user.email
     }), 200

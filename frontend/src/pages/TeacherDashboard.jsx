@@ -9,6 +9,14 @@ function TeacherDashboard() {
   const [prediction, setPrediction] = useState(null);
 
   const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("name");
+    localStorage.removeItem("email");
+
+    navigate("/");
+  };
 
   const getPrediction = async () => {
     try {
@@ -47,8 +55,12 @@ function TeacherDashboard() {
           </p>
         </div>
 
-        <div className="teacher-profile">
-          <div className="profile-circle">T</div>
+        <div
+          className="teacher-profile"
+          onClick={handleLogout}
+          style={{ cursor: "pointer" }}
+        >
+          <div className="profile-circle">⎋</div>
         </div>
       </div>
 

@@ -16,6 +16,7 @@ function TeacherAddStudent() {
   const [form, setForm] = useState({
     name: "",
     email: "",
+    password: "",
     age: "",
     gender: "Male",
     phone: "",
@@ -68,7 +69,6 @@ function TeacherAddStudent() {
     try {
       await API.post("/auth/register", {
         ...form,
-        password: "Student@123",
         role: "student",
         student_id: sameEnrollment ? form.enrollment_no : form.student_id
       })
@@ -78,6 +78,7 @@ function TeacherAddStudent() {
       setForm({
         name: "",
         email: "",
+        password: "",
         age: "",
         gender: "Male",
         phone: "",
@@ -151,6 +152,20 @@ function TeacherAddStudent() {
               name="email"
               placeholder="Enter email"
               value={form.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>
+              Password <span className="required-star">*</span>
+            </label>
+
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter student password"
+              value={form.password}
               onChange={handleChange}
               required
             />

@@ -27,10 +27,13 @@ function AuthPage() {
           password
         }
       )
-
+      console.log(response.data)
+      
       const {
         access_token,
-        role
+        role,
+        name,
+        email: userEmail
       } = response.data
 
       localStorage.setItem(
@@ -41,6 +44,16 @@ function AuthPage() {
       localStorage.setItem(
         "role",
         role
+      )
+
+      localStorage.setItem(
+        "name",
+        name
+      )
+
+      localStorage.setItem(
+        "email",
+        userEmail
       )
 
       if (role === "admin")
@@ -157,19 +170,7 @@ function AuthPage() {
               </button>
 
               <p className="auth-switch">
-
-                Don't have an account?
-
-                {" "}
-
-                <span
-                  onClick={() =>
-                    setIsFlipped(true)
-                  }
-                >
-                  Register
-                </span>
-
+                Contact your teacher/admin for account access.
               </p>
 
             </div>

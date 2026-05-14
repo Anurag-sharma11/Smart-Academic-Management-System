@@ -7,6 +7,15 @@ function StudentDashboard() {
   const [data, setData] = useState(null)
 
   const navigate = useNavigate()
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    localStorage.removeItem("role")
+    localStorage.removeItem("name")
+    localStorage.removeItem("email")
+
+    navigate("/")
+  }
+  const studentName = localStorage.getItem("name")
 
   // 📊 FETCH DASHBOARD DATA
   const fetchData = async () => {
@@ -35,7 +44,9 @@ function StudentDashboard() {
 
         <div>
 
-          <h1>Welcome Back 🎓</h1>
+          <h1>
+            Welcome Back {studentName || "Student"} 🎓
+          </h1>
 
           <p>
             Track your academics, attendance and performance insights.
@@ -43,8 +54,12 @@ function StudentDashboard() {
 
         </div>
 
-        <div className="student-profile-badge">
-          STUDENT PORTAL
+        <div
+          className="student-profile-badge"
+          onClick={handleLogout}
+          style={{ cursor: "pointer" }}
+        >
+          LOGOUT
         </div>
 
       </div>

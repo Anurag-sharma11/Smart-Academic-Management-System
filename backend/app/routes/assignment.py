@@ -1,9 +1,11 @@
-from flask import Blueprint, request, jsonify, send_from_directory
+from flask import Blueprint, request, jsonify, send_from_directory, make_response
 from app.extensions import db
 from app.models.assignment import Assignment, Submission
 from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity
 from datetime import datetime
 import os
+import mimetypes
+
 from werkzeug.utils import secure_filename
 
 assignment_bp = Blueprint("assignment", __name__, url_prefix="/api/assignment")
@@ -192,4 +194,22 @@ def grade_submission(submission_id):
 # 🔥🔥 NEW: SERVE FILES (THIS FIXES 404)
 @assignment_bp.route("/uploads/<filename>", methods=["GET"])
 def get_uploaded_file(filename):
-    return send_from_directory(UPLOAD_FOLDER, filename)
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
+
+    if not os.path.exists(file_path):
+        return jsonify({"message": "File not found"}), 404
+
+    mime_type, _ = mimetypes.guess_type(file_path)
+
+    response = make_response(
+        send_from_directory(
+            UPLOAD_FOLDER,
+            filename,
+            mimetype=mime_type,
+            as_attachment=False
+        )
+    )
+
+    response.headers["Content-Disposition"] = f'inline; filename="{filename}"'
+
+    return response

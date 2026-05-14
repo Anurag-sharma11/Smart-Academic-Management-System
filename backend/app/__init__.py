@@ -1,5 +1,5 @@
 from flask import Flask
-from .extensions import db, jwt, migrate
+from .extensions import db, jwt, migrate, mail
 from .config import Config
 from flask_cors import CORS
 
@@ -25,7 +25,8 @@ def create_app():
     db.init_app(app)
     jwt.init_app(app)
     migrate.init_app(app, db)
-
+    mail.init_app(app)
+    
     # ✅ Import models
     from app.models.user import User
     from app.models.attendance import Attendance

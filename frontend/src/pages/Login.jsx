@@ -16,10 +16,12 @@ function Login() {
         password,
       })
 
-      const { access_token, role } = response.data
+      const { access_token, role, name, email } = response.data
 
       localStorage.setItem("token", access_token)
       localStorage.setItem("role", role)
+      localStorage.setItem("name", name)
+      localStorage.setItem("email", email)
 
       if (role === "admin") navigate("/admin-dashboard")
       if (role === "teacher") navigate("/teacher-dashboard")
@@ -93,13 +95,7 @@ function Login() {
           </button>
 
           <p className="auth-switch">
-            Don't have an account?
-            {" "}
-
-            <Link to="/register">
-              Register
-            </Link>
-
+            Contact your teacher/admin for account access.
           </p>
 
         </div>
