@@ -1,102 +1,142 @@
-import { useEffect, useState } from "react"
-import API from "../services/api"
+import { useEffect, useState } from "react";
+import API from "../services/api";
+import "./AdminDashboard.css";
+import { useNavigate } from "react-router-dom";
+
+import {
+  FaHome,
+  FaChalkboardTeacher,
+  FaBook,
+  FaSchool,
+  FaProjectDiagram,
+  FaCalendarAlt,
+  FaChartLine,
+  FaCog,
+  FaBell,
+  FaSearch,
+  FaUserShield,
+} from "react-icons/fa";
 
 function AdminDashboard() {
-  const [users, setUsers] = useState([])
+  const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
-  // Fetch all users
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem("token")
-
-      const response = await API.get("/admin/users")
-
-      setUsers(response.data)
+      const response = await API.get("/admin/users");
+      setUsers(response.data);
     } catch (error) {
-      console.log("Error fetching users:", error)
+      console.log("Error fetching users:", error);
     }
-  }
-
-  // Update permission
-  const updatePermission = async (id, field, value) => {
-    try {
-      const token = localStorage.getItem("token")
-
-      await API.patch(
-        `/admin/update-permission/${id}`,
-        { [field]: value }
-      )
-
-      fetchUsers()
-    } catch (error) {
-      console.log("Error updating permission:", error)
-    }
-  }
+  };
 
   useEffect(() => {
-    fetchUsers()
-  }, [])
+    fetchUsers();
+  }, []);
+
+  const teacherCount = users.filter(
+    (user) => user.role === "teacher"
+  ).length;
+
+  const adminCount = users.filter(
+    (user) => user.role === "admin"
+  ).length;
+
+  const subAdminCount = users.filter(
+    (user) => user.role === "sub_admin"
+  ).length;
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-10">
-      <h1 className="text-3xl font-bold mb-8">Admin Dashboard 🚀</h1>
+      <>
+        {/* WELCOME CARD */}
+        <section className="welcome-card">
 
-      <table className="w-full border border-gray-700">
-        <thead className="bg-gray-800">
-          <tr>
-            <th className="p-3 border">ID</th>
-            <th className="p-3 border">Name</th>
-            <th className="p-3 border">Email</th>
-            <th className="p-3 border">Role</th>
-            <th className="p-3 border">Teacher Access</th>
-            <th className="p-3 border">Student Access</th>
-          </tr>
-        </thead>
+          <div>
+            <h1>
+              Welcome Back, Anurag 👋 
+            </h1>
 
-        <tbody>
-          {users.map((user) => (
-            <tr
-              key={user.id}
-              className="text-center border-t border-gray-700"
-            >
-              <td className="p-3 border">{user.id}</td>
-              <td className="p-3 border">{user.name}</td>
-              <td className="p-3 border">{user.email}</td>
-              <td className="p-3 border">{user.role}</td>
+            <p>
+              Manage faculty, subjects,
+              classes and institutional operations.
+            </p>
+          </div>
 
-              <td className="p-3 border">
-                <input
-                  type="checkbox"
-                  checked={user.can_access_teacher || false}
-                  onChange={(e) =>
-                    updatePermission(
-                      user.id,
-                      "can_access_teacher",
-                      e.target.checked
-                    )
-                  }
-                />
-              </td>
+          <div className="welcome-badge">
+            ALASK ERP
+          </div>
 
-              <td className="p-3 border">
-                <input
-                  type="checkbox"
-                  checked={user.can_access_student || false}
-                  onChange={(e) =>
-                    updatePermission(
-                      user.id,
-                      "can_access_student",
-                      e.target.checked
-                    )
-                  }
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
+        </section>
+
+        {/* STATS */}
+        <section className="stats-grid">
+          <div className="stat-card">
+            <h4>Teachers</h4>
+            <h2>{teacherCount}</h2>
+          </div>
+
+          <div className="stat-card">
+            <h4>Classes</h4>
+            <h2>12</h2>
+          </div>
+
+          <div className="stat-card">
+            <h4>Subjects</h4>
+            <h2>42</h2>
+          </div>
+
+          <div className="stat-card">
+            <h4>Faculty Mapping</h4>
+            <h2>18</h2>
+          </div>
+        </section>
+
+        {/* OPERATIONS */}
+        <section className="dashboard-row">
+          {/* ACADEMICS */}
+          <div className="panel">
+            <h2>Academic Management</h2>
+
+            <div className="panel-buttons">
+              <button>📚 Manage Subjects</button>
+
+              <button>🏫 Manage Classes</button>
+
+              <button>🎯 Faculty Assignment</button>
+
+              <button>📅 Timetable</button>
+            </div>
+          </div>
+
+          {/* ADMINISTRATION */}
+          <div className="panel">
+            <h2>User Administration</h2>
+
+            <div className="panel-buttons">
+              <button>👨‍🏫 Manage Teachers</button>
+
+              <button>🛡️ Manage Sub Admins</button>
+
+              <button>⚙️ Permissions</button>
+
+              <button>📊 Analytics</button>
+            </div>
+          </div>
+        </section>
+
+        {/* RECENT ACTIVITIES */}
+        <section className="activity-panel">
+          <h2>Recent Activities</h2>
+
+          <ul>
+            <li>Teacher Added</li>
+            <li>Subject Created</li>
+            <li>Class Assigned</li>
+            <li>Faculty Mapping Updated</li>
+          </ul>
+        </section>
+        </>
+  );
 }
 
-export default AdminDashboard
+export default AdminDashboard;

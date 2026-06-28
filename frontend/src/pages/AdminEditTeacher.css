@@ -1,0 +1,27 @@
+.admin-edit-teacher{
+  padding:30px;
+}
+
+.edit-teacher-header{
+  margin-bottom:25px;
+}
+
+.teacher-form{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+
+.teacher-form input{
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:12px;
+}
+
+.update-btn{
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+}

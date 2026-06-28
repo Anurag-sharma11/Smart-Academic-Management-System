@@ -1,0 +1,61 @@
+.admin-edit-subject{
+  padding:30px;
+}
+
+.edit-subject-header{
+  margin-bottom:25px;
+}
+
+.edit-subject-header h1{
+  margin:0;
+}
+
+.edit-subject-header p{
+  color:#64748b;
+  margin-top:8px;
+}
+
+.subject-form{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+
+  max-width:700px;
+
+  background:white;
+  padding:25px;
+  border-radius:18px;
+
+  border:1px solid #edf2f7;
+
+  box-shadow:0 10px 25px rgba(15,23,42,0.05);
+}
+
+.subject-form input,
+.subject-form select{
+  height:48px;
+  padding:0 15px;
+  border:1px solid #dbe3ea;
+  border-radius:12px;
+  outline:none;
+  font-size:14px;
+}
+
+.subject-form input:focus,
+.subject-form select:focus{
+  border-color:#14b8a6;
+}
+
+.save-subject-btn{
+  height:48px;
+  border:none;
+  border-radius:12px;
+  background:#14b8a6;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.save-subject-btn:hover{
+  background:#0f9e8f;
+}

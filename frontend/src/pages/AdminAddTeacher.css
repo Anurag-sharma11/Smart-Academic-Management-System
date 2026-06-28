@@ -1,0 +1,31 @@
+.admin-add-teacher {
+  padding: 30px;
+}
+
+.add-teacher-header {
+  margin-bottom: 25px;
+}
+
+.add-teacher-header h1 {
+  margin-bottom: 5px;
+}
+
+.teacher-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.teacher-form input {
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+}
+
+.save-btn {
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}

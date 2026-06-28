@@ -16,6 +16,13 @@ import TeacherManageStudents from "./pages/TeacherManageStudents"
 import TeacherAttendanceHistory from "./pages/TeacherAttendanceHistory"
 import TeacherAnalytics from "./pages/TeacherAnalytics"
 import AuthPage from "./pages/AuthPage"
+import AdminManageTeachers from "./pages/AdminManageTeachers";
+import AdminAddTeacher from "./pages/AdminAddTeacher";
+import AdminEditTeacher from "./pages/AdminEditTeacher";
+import AdminLayout from "./layouts/AdminLayout";
+import AdminManageSubjects from "./pages/AdminManageSubjects";
+import AdminAddSubject from "./pages/AdminAddSubject";
+import AdminEditSubject from "./pages/AdminEditSubject";
 
 function App() {
   return (
@@ -23,15 +30,49 @@ function App() {
       <Route path="/" element={<AuthPage />} />
       <Route path="/register" element={<AuthPage />} />
 
-      {/* Admin Dashboard */}
       <Route
-        path="/admin-dashboard"
         element={
-          <ProtectedRoute allowedRoles={["admin"]}>
-            <AdminDashboard />
-          </ProtectedRoute>
+          <ProtectedRoute allowedRoles={["admin"]}> <AdminLayout /> </ProtectedRoute>
         }
-      />
+      >
+
+        <Route
+          path="/admin-dashboard"
+          element={<AdminDashboard />}
+        />
+
+        <Route
+          path="/admin-manage-teachers"
+          element={<AdminManageTeachers />}
+        />
+
+        <Route
+          path="/admin-add-teacher"
+          element={<AdminAddTeacher />}
+        />
+
+        <Route
+          path="/admin-edit-teacher/:id"
+          element={<AdminEditTeacher />}
+        /> 
+        
+        <Route
+          path="/admin-manage-subjects"
+          element={<AdminManageSubjects />}
+        />
+
+        <Route
+          path="/admin-add-subject"
+          element={<AdminAddSubject />}
+        />
+
+        <Route
+          path="/admin-edit-subject/:id"
+          element={<AdminEditSubject />}
+        />
+
+        </Route>
+
 
       {/* Teacher Dashboard */}
       <Route

@@ -31,6 +31,7 @@ def create_app():
     from app.models.user import User
     from app.models.attendance import Attendance
     from app.models.assignment import Assignment, Submission
+    from app.models.subject import Subject
 
     # ✅ Register blueprints
     from app.routes.auth import auth_bp
@@ -38,6 +39,9 @@ def create_app():
 
     from app.routes.admin import admin_bp
     app.register_blueprint(admin_bp)
+    
+    from app.routes.subject import subject_bp
+    app.register_blueprint(subject_bp)
 
     from app.routes.attendance import attendance_bp
     app.register_blueprint(attendance_bp)
